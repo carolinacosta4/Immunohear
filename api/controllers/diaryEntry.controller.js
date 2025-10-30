@@ -64,6 +64,23 @@ exports.createDiary = async (req, res) => {
 
 exports.findUserEntries = async (req, res) => {
   try {
+    if (req.query.date) {
+      const queryDate = new Date(req.query.date);
+      const start = new Date(queryDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+
+      const entries = await Diary.findOne({
+        createdAt: { $gte: start, $lt: end },
+      }).exec();
+
+      return res.status(200).json({
+        success: true,
+        data: entries,
+      });
+    }
+    
     const userEntries = await Diary.find({ IDuser: req.params.idU }).exec();
 
     return res.status(200).json({

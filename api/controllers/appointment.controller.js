@@ -62,7 +62,26 @@ exports.createAppointment = async (req, res) => {
 
 exports.findUserAppointments = async (req, res) => {
   try {
-    const userAppointments = await Appointment.find({ IDuser: req.params.idU }).exec();
+    if (req.query.date) {
+      const queryDate = new Date(req.query.date);
+      const start = new Date(queryDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+
+      const appointments = await Appointment.find({
+        date: { $gte: start, $lt: end },
+      }).exec();
+
+      return res.status(200).json({
+        success: true,
+        data: appointments,
+      });
+    }
+
+    const userAppointments = await Appointment.find({
+      IDuser: req.params.idU,
+    }).exec();
 
     return res.status(200).json({
       success: true,
