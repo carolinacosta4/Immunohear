@@ -4,7 +4,7 @@ const db = require("../models/index.js");
 const config = require("../config/db.config.js");
 const mongoose = require("mongoose");
 const User = db.User;
-const Disease = db.Disease;
+const UserDisease = db.UserDisease;
 const DiaryEntry = db.DiaryEntry;
 const Appointment = db.Appointment;
 const Exam = db.Exam;
@@ -48,8 +48,9 @@ exports.findUser = async (req, res) => {
       .select("-__v -password")
       .exec();
 
-    const diseases = await Disease.find({ IDuser: req.params.idU })
+    const diseases = await UserDisease.find({ IDuser: req.params.idU })
       .select("-__v")
+      .populate('IDdisease', '-__v')
       .exec();
 
     const entries = await DiaryEntry.find({ IDuser: req.params.idU })
@@ -66,11 +67,7 @@ exports.findUser = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      user,
-      diseases,
-      entries,
-      appointments,
-      exams,
+      user: { user, diseases, entries, appointments, exams }
     });
   } catch (error) {
     handleErrorResponse(res, error);
@@ -177,6 +174,7 @@ exports.login = async (req, res) => {
       success: true,
       msg: "User logged in successfully.",
       accessToken: token,
+      userID: user._id,
     });
   } catch (error) {
     handleErrorResponse(res, error);

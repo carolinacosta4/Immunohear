@@ -1,4 +1,4 @@
-import { Link, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";

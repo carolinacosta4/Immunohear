@@ -7,9 +7,10 @@ import {
 } from "react-native";
 import useFonts from "@/hooks/useFonts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Link, useNavigation } from "expo-router";
+import { Link, router, useNavigation } from "expo-router";
 import Icon from "react-native-vector-icons/Feather";
 import { useState } from "react";
+import { useUserStore } from "@/stores/userStore";
 
 export default function LoginPage() {
   const fonts = useFonts({
@@ -18,7 +19,35 @@ export default function LoginPage() {
     "Kaleko-Bold": require("@/assets/fonts/kaleko-bold.otf"),
   });
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const { loginUser } = useUserStore();
+
+  const handleLogin = async () => {
+    try {
+      const response = await loginUser(email, password);
+      if (response.success) {
+        setShowError(false);
+        setShowConfirmation(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+      } else {
+        setShowConfirmation(false);
+        setShowError(true);
+        setError("An error occurred");
+      }
+    } catch (error) {
+      setShowConfirmation(false);
+      setShowError(true);
+      setError(error);
+    }
+  };
+
   return (
     <SafeAreaProvider style={{ backgroundColor: "#DAF0EE" }}>
       <SafeAreaView
@@ -91,7 +120,7 @@ export default function LoginPage() {
                     }}
                     placeholder="Email"
                     placeholderTextColor={"#3B413C"}
-                    // onChangeText={handleSearchChange}
+                    onChangeText={setEmail}
                   />
                   <View
                     style={{
@@ -116,7 +145,8 @@ export default function LoginPage() {
                       }}
                       placeholder="Password"
                       placeholderTextColor={"#3B413C"}
-                      // onChangeText={handleSearchChange}
+                      onChangeText={setPassword}
+                      secureTextEntry={showPassword}
                     />
                     <TouchableOpacity
                       onPress={() => setShowPassword(!showPassword)}
@@ -126,7 +156,7 @@ export default function LoginPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye-off"
+                          name="eye"
                           size={20}
                           color="#3B413C"
                         />
@@ -135,13 +165,24 @@ export default function LoginPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye"
+                          name="eye-off"
                           size={20}
                           color="#3B413C"
                         />
                       )}
                     </TouchableOpacity>
                   </View>
+                  {showError && (
+                    <Text style={{ color: "red", textAlign: "center" }}>
+                      {error}
+                    </Text>
+                  )}
+
+                  {showConfirmation && (
+                    <Text style={{ color: "green", textAlign: "center" }}>
+                      You have logged in successfully.
+                    </Text>
+                  )}
                 </View>
                 <TouchableOpacity
                   style={{
@@ -151,6 +192,7 @@ export default function LoginPage() {
                     height: 50,
                     justifyContent: "center",
                   }}
+                  onPress={handleLogin}
                 >
                   <Text
                     style={{

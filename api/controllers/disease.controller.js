@@ -84,6 +84,7 @@ exports.addDiseaseToUser = async (req, res) => {
 
     const userDiseaseFound = await UserDisease.findOne({
       IDdisease: req.body.IDdisease,
+      IDuser: req.params.idU
     });
     if (userDiseaseFound)
       return res.status(400).json({

@@ -1,10 +1,7 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import "react-native-reanimated";
 
 export const unstable_settings = {
@@ -12,6 +9,14 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    "Antebas-Medium": require("@/assets/fonts/antebas-medium.otf"),
+    "Antebas-Regular": require("@/assets/fonts/antebas-regular.otf"),
+    "Kaleko-Bold": require("@/assets/fonts/kaleko-bold.otf"),
+  });
+
+  if (!fontsLoaded) return null;
+
   return (
     <>
       <Stack>
@@ -24,6 +29,7 @@ export default function RootLayout() {
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="privacypolicy" options={{ headerShown: false }} />
         <Stack.Screen name="welcome" options={{ headerShown: false }} />
+        <Stack.Screen name="personal" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </>

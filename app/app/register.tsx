@@ -5,22 +5,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import useFonts from "@/hooks/useFonts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Link, useNavigation } from "expo-router";
 import Icon from "react-native-vector-icons/Feather";
 import { useState } from "react";
+import { useUserStore } from "@/stores/userStore";
 
 export default function RegisterPage() {
-  const fonts = useFonts({
-    "Antebas-Medium": require("@/assets/fonts/antebas-medium.otf"),
-    "Antebas-Regular": require("@/assets/fonts/antebas-regular.otf"),
-    "Kaleko-Bold": require("@/assets/fonts/kaleko-bold.otf"),
-  });
-
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState('');
+  const { addUser } = useUserStore();
   const navigation = useNavigation();
+
+  const registerUser = async () => {
+    try {
+      setShowError(false)
+      setError('')
+      const response = await addUser({
+        email,
+        name,
+        password,
+        confirmPassword,
+      });
+      console.log(response)
+    } catch (error) {
+      setShowError(true)
+      setError(error)
+      console.log(error);
+      
+    }
+  };
+
   return (
     <SafeAreaProvider style={{ backgroundColor: "#DAF0EE" }}>
       <SafeAreaView
@@ -104,7 +125,7 @@ export default function RegisterPage() {
                     }}
                     placeholder="Email"
                     placeholderTextColor={"#3B413C"}
-                    // onChangeText={handleSearchChange}
+                    onChangeText={setEmail}
                   />
                   <TextInput
                     style={{
@@ -121,7 +142,7 @@ export default function RegisterPage() {
                     }}
                     placeholder="Name"
                     placeholderTextColor={"#3B413C"}
-                    // onChangeText={handleSearchChange}
+                    onChangeText={setName}
                   />
                   <View
                     style={{
@@ -146,7 +167,8 @@ export default function RegisterPage() {
                       }}
                       placeholder="Password"
                       placeholderTextColor={"#3B413C"}
-                      // onChangeText={handleSearchChange}
+                      onChangeText={setPassword}
+                      secureTextEntry={showPassword}
                     />
                     <TouchableOpacity
                       onPress={() => setShowPassword(!showPassword)}
@@ -195,7 +217,8 @@ export default function RegisterPage() {
                       }}
                       placeholder="Confirm password"
                       placeholderTextColor={"#3B413C"}
-                      // onChangeText={handleSearchChange}
+                      onChangeText={setConfirmPassword}
+                      secureTextEntry={showPasswordConfirm}
                     />
                     <TouchableOpacity
                       onPress={() =>
@@ -223,6 +246,11 @@ export default function RegisterPage() {
                       )}
                     </TouchableOpacity>
                   </View>
+                  {showError && (
+                    <Text style={{ color: "red", textAlign: "center" }}>
+                      {error}
+                    </Text>
+                  )}
                 </View>
                 <TouchableOpacity
                   style={{
@@ -232,6 +260,7 @@ export default function RegisterPage() {
                     height: 50,
                     justifyContent: "center",
                   }}
+                  onPress={registerUser}
                 >
                   <Text
                     style={{

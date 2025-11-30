@@ -60,8 +60,6 @@ exports.findOne = async (req, res) => {
 
 exports.addTip = async (req, res) => {
   try {
-    console.log(req.body);
-
     if (
       !req.body.title ||
       !req.body.info ||

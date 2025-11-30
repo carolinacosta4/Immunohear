@@ -4,10 +4,10 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
 
 export default function PrivacyPolicyPage() {
-    const navigation = useNavigation();
-  
+  const navigation = useNavigation();
+
   return (
-    <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
+    <SafeAreaProvider style={{ backgroundColor: "#DAF0EE" }}>
       <SafeAreaView>
         <ScrollView>
           <View
@@ -20,12 +20,12 @@ export default function PrivacyPolicyPage() {
             }}
           >
             <TouchableOpacity
-                      onPress={() => {
-                        navigation.goBack();
-                      }}
-                    >
-                      <Icon name="chevron-left" size={28} color="#3B413C" />
-                    </TouchableOpacity>
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <Icon name="chevron-left" size={28} color="#3B413C" />
+            </TouchableOpacity>
 
             <Text
               style={{

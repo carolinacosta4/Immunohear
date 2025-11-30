@@ -47,7 +47,7 @@ exports.createDiary = async (req, res) => {
     let diary = new Diary({
       text: req.body.text,
       IDuser: req.loggedUserId,
-      IDfeeling: req.body.IDfeeling,
+      IDFeeling: req.body.IDfeeling,
     });
 
     const newDiary = await diary.save();
@@ -73,7 +73,7 @@ exports.findUserEntries = async (req, res) => {
 
       const entries = await Diary.findOne({
         createdAt: { $gte: start, $lt: end },
-      }).exec();
+      }).populate('IDFeeling', "-__v").exec();
 
       return res.status(200).json({
         success: true,
@@ -81,7 +81,7 @@ exports.findUserEntries = async (req, res) => {
       });
     }
     
-    const userEntries = await Diary.find({ IDuser: req.params.idU }).exec();
+    const userEntries = await Diary.find({ IDuser: req.params.idU }).populate('IDFeeling', "-__v").exec();
 
     return res.status(200).json({
       success: true,
