@@ -4,7 +4,8 @@ import { User } from "@/interfaces/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // AsyncStorage.clear()
 interface UserState {
-  user: User | undefined;
+  user: {token: string, userID: string} | undefined;
+  userInfo: User | undefined;
   logged: boolean;
   id: string | undefined;
   getUser: () => {
@@ -29,7 +30,7 @@ interface UserState {
   deleteUser: (id: string, authToken: string) => Promise<void>;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>((set, get) => ({
   user: undefined,
   logged: false,
   id: undefined,
@@ -55,16 +56,21 @@ export const useUserStore = create<UserState>((set) => ({
   },
   fetchUser: async (userID) => {
     try {
-      const response = await api.get(`users/${userID}`);
-      set({ user: response.data.user });
-      return response.data.user;
+      const existingUser = get().userInfo;
+      if (existingUser === undefined) {
+        const response = await api.get(`users/${userID}`);
+        set({ userInfo: response.data.user });
+        return response.data.user;
+      }
+      return existingUser;
     } catch (error) {
       console.log(error);
     }
   },
   addUser: async (user) => {
     try {
-      await api.post("users", user);
+      const response = await api.post("users", user);
+      return response.data
     } catch (error: any) {
       if (error.response?.status === 401) return;
       throw error.response?.data?.msg;
@@ -96,7 +102,8 @@ export const useUserStore = create<UserState>((set) => ({
         },
       });
       const response = await api.get(`users/${id}`);
-      set({ user: response.data });
+      set({ userInfo: response.data.user });
+      return response.data;
     } catch (error: any) {
       if (error.response?.status === 401) return;
       throw error.response?.data?.msg;
@@ -111,7 +118,8 @@ export const useUserStore = create<UserState>((set) => ({
         },
       });
       const response = await api.get(`users/${id}`);
-      set({ user: response.data });
+      set({ userInfo: response.data.user });
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -124,14 +132,14 @@ export const useUserStore = create<UserState>((set) => ({
         },
       });
       set({
-        user: undefined,
+        userInfo: undefined,
       });
     } catch (error) {
       console.log(error);
     }
   },
   logout: async () => {
-    set({ user: undefined, logged: false, id: undefined });
+    set({ user: undefined, logged: false, id: undefined, userInfo: undefined });
     await AsyncStorage.removeItem("user");
   },
 }));

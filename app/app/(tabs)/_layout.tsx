@@ -1,5 +1,6 @@
-import { Tabs } from "expo-router";
-import React from "react";
+import { useUserStore } from "@/stores/userStore";
+import { Tabs, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import IconBulb from "react-native-vector-icons/Octicons";
@@ -7,6 +8,29 @@ import IconBulb from "react-native-vector-icons/Octicons";
 const { width, height } = Dimensions.get("window");
 
 export default function TabLayout() {
+  const { getUser, fetchUser } = useUserStore();
+  const router = useRouter();
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function loadUser() {
+      const response = await getUser();
+      if (response.logged === false) {
+        router.push("/welcome");
+      } else {
+        fetchUserInfo(response.user.userID);
+      }
+    }
+    loadUser();
+  }, [getUser]);
+
+  const fetchUserInfo = async (id) => {
+    try {
+      const response = await fetchUser(id);
+      setUser(response);
+    } catch (error) {}
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -98,7 +122,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="account"
+        name="account/[id]"
         options={{
           title: "Account",
           headerShown: false,
@@ -113,6 +137,12 @@ export default function TabLayout() {
             </View>
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("account/[id]", { id: user?.userID });
+          },
+        })}
       />
     </Tabs>
   );

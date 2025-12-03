@@ -3,7 +3,6 @@ import { useUserStore } from "@/stores/userStore";
 import { addDays, format, isBefore, startOfDay, startOfWeek } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import {
-  Button,
   Dimensions,
   Image,
   ScrollView,

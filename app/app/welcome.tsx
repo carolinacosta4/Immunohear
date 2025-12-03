@@ -1,23 +1,8 @@
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import useFonts from "@/hooks/useFonts";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
-import Icon from "react-native-vector-icons/Feather";
-import { useState } from "react";
+import { router } from "expo-router";
 
 export default function WelcomePage() {
-  const fonts = useFonts({
-    "Antebas-Medium": require("@/assets/fonts/antebas-medium.otf"),
-    "Antebas-Regular": require("@/assets/fonts/antebas-regular.otf"),
-    "Kaleko-Bold": require("@/assets/fonts/kaleko-bold.otf"),
-  });
-
   return (
     <SafeAreaProvider style={{ backgroundColor: "#DAF0EE" }}>
       <SafeAreaView
@@ -67,72 +52,62 @@ export default function WelcomePage() {
             </View>
             <View style={{ gap: 22 }}>
               <View style={{ gap: 18 }}>
-                <View
+                <TouchableOpacity
                   style={{
                     flex: 1,
                     borderColor: "#3B413C",
                     borderWidth: 2,
+
                     borderRadius: 50,
                     height: 50,
                     alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => {
+                    router.push("/register");
                   }}
                 >
-                  <Link href={"/register"} asChild>
-                    <TouchableOpacity
-                      style={{
-                        flex: 1,
-                        height: 50,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          fontSize: 20,
-                          fontFamily: "Antebas-Regular",
-                          color: "#3B413C",
-                        }}
-                      >
-                        Sign Up
-                      </Text>
-                    </TouchableOpacity>
-                  </Link>
-                </View>
-                <View
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 20,
+                      fontFamily: "Antebas-Regular",
+                      color: "#3B413C",
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={{
                     flex: 1,
                     backgroundColor: "#3B413C",
                     borderRadius: 50,
                     height: 50,
                     alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => {
+                    router.push("/login");
                   }}
                 >
-                  <Link href={"/login"} asChild>
-                    <TouchableOpacity
-                      style={{
-                        flex: 1,
-                        height: 50,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          fontSize: 20,
-                          fontFamily: "Antebas-Regular",
-                          color: "#FFFFFF",
-                        }}
-                      >
-                        Login
-                      </Text>
-                    </TouchableOpacity>
-                  </Link>
-                </View>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 20,
+                      fontFamily: "Antebas-Regular",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    Login
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
+      <Image source={require("@/assets/images/welcome.png")} />
     </SafeAreaProvider>
   );
 }

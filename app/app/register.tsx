@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   Text,
   TextInput,
@@ -6,39 +7,50 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Link, useNavigation } from "expo-router";
+import { Link, useNavigation, router } from "expo-router";
 import Icon from "react-native-vector-icons/Feather";
 import { useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 
 export default function RegisterPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(true);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showError, setShowError] = useState(false);
-  const [error, setError] = useState('');
-  const { addUser } = useUserStore();
+  const [error, setError] = useState("");
+  const { addUser, loginUser } = useUserStore();
   const navigation = useNavigation();
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const registerUser = async () => {
     try {
-      setShowError(false)
-      setError('')
+      setShowError(false);
+      setError("");
       const response = await addUser({
         email,
         name,
         password,
         confirmPassword,
       });
-      console.log(response)
+      if (response.success) {
+        setShowError(false);
+        setShowConfirmation(true);
+        await loginUser(email, password);
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+      } else {
+        setShowConfirmation(false);
+        setShowError(true);
+        setError("An error occurred");
+      }
     } catch (error) {
-      setShowError(true)
-      setError(error)
+      setShowError(true);
+      setError(error);
       console.log(error);
-      
     }
   };
 
@@ -178,7 +190,7 @@ export default function RegisterPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye-off"
+                          name="eye"
                           size={20}
                           color="#3B413C"
                         />
@@ -187,7 +199,7 @@ export default function RegisterPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye"
+                          name="eye-off"
                           size={20}
                           color="#3B413C"
                         />
@@ -230,7 +242,7 @@ export default function RegisterPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye-off"
+                          name="eye"
                           size={20}
                           color="#3B413C"
                         />
@@ -239,7 +251,7 @@ export default function RegisterPage() {
                           style={{
                             padding: 10,
                           }}
-                          name="eye"
+                          name="eye-off"
                           size={20}
                           color="#3B413C"
                         />
@@ -249,6 +261,12 @@ export default function RegisterPage() {
                   {showError && (
                     <Text style={{ color: "red", textAlign: "center" }}>
                       {error}
+                    </Text>
+                  )}
+
+                  {showConfirmation && (
+                    <Text style={{ color: "green", textAlign: "center" }}>
+                      Your account has been created successfully.
                     </Text>
                   )}
                 </View>
@@ -308,6 +326,7 @@ export default function RegisterPage() {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <Image source={require("@/assets/images/register.png")} />
     </SafeAreaProvider>
   );
 }

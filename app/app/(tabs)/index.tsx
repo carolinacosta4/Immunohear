@@ -7,12 +7,15 @@ import { User } from "@/interfaces/User";
 import NextAppointment from "@/components/NextAppointment";
 import QuickActions from "@/components/QuickActions";
 import YourDiagnosis from "@/components/YourDiagnosis";
+import { getMonth } from "date-fns";
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const router = useRouter();
   const { fetchUser, getUser } = useUserStore();
   const [user, setUser] = useState<User>();
+  const [futureEntries, setFutureEntries] = useState([]);
+  const today = new Date();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +33,13 @@ export default function HomeScreen() {
   const fetchUserInfo = async (id) => {
     try {
       const response = await fetchUser(id);
+      setFutureEntries(
+        today.getMonth() === getMonth(new Date())
+          ? response.appointments.filter(
+              (appointment) => new Date(appointment.date) > new Date()
+            )
+          : []
+      );
       setUser(response);
       setLoading(false);
     } catch (error) {}
@@ -42,6 +52,7 @@ export default function HomeScreen() {
         <SafeAreaView>
           <ScrollView
             style={{ paddingHorizontal: 34 }}
+            contentContainerStyle={{ paddingBottom: 120 }}
           >
             <View style={{ marginBottom: 24 }}>
               <Text
@@ -63,8 +74,8 @@ export default function HomeScreen() {
                 {user.user.name}
               </Text>
             </View>
-            {user.appointments.length !== 0 && (
-              <NextAppointment appointments={user.appointments} />
+            {futureEntries.length !== 0 && (
+              <NextAppointment appointments={futureEntries} />
             )}
             <QuickActions />
             <YourDiagnosis diagnosis={user.diseases} />

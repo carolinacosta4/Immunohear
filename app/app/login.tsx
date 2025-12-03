@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   Text,
   TextInput,
@@ -230,6 +231,7 @@ export default function LoginPage() {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <Image source={require("@/assets/images/login.png")} />
     </SafeAreaProvider>
   );
 }

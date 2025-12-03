@@ -32,14 +32,6 @@ export default function TipPage() {
       console.log(error);
     }
   };
-  // const tip = {
-  //   _id: "4",
-  //   image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
-  //   title: "Plant a Mini Garden",
-  //   info: "Grow herbs at home — cheap, sustainable, and tasty.",
-  //   author: "Alberta Fernandes",
-  //   description: "Lorem Ipsummmmmmmmmmmmmmmmmmmmmmmmmmm",
-  // };
 
   return (
     !loading &&

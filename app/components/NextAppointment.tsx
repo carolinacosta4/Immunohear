@@ -1,4 +1,5 @@
 import { Appointment } from "@/interfaces/Appointment";
+import { format, getMonth } from "date-fns";
 import { Text, View } from "react-native";
 
 type NextAppointmentProps = {
@@ -6,6 +7,15 @@ type NextAppointmentProps = {
 };
 
 const NextAppointment = ({ appointments }: NextAppointmentProps) => {
+  const today = new Date();
+  const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+  tomorrow.setHours(0, 0, 0, 0);
+  const appointmentDate = new Date(appointments[0].date);
+  appointmentDate.setHours(0, 0, 0, 0);
+
+  console.log(appointmentDate);
+  console.log(tomorrow);
+
   return (
     <View>
       <View
@@ -49,7 +59,6 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
               gap: 4,
             }}
           >
-            {/* falta aqui */}
             <Text
               style={{
                 color: "#3B413C",
@@ -57,7 +66,9 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
                 fontSize: 18,
               }}
             >
-              Tomorrow
+              {appointmentDate.getTime() === tomorrow.getTime()
+                ? "Tomorrow"
+                : format(appointmentDate, "dd/MM/yyyy")}
             </Text>
             <Text
               style={{
@@ -66,7 +77,7 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
                 fontSize: 18,
               }}
             >
-              16:30
+              {format(new Date(appointments[0].date), "HH:mm")}
             </Text>
           </View>
         </View>

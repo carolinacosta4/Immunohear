@@ -1,12 +1,13 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
 
 export default function HomeScreen() {
-  const { getUser, fetchUser } = useUserStore();
+  const router = useRouter();
+  const { getUser, fetchUser, logout } = useUserStore();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{
     _id: "";
@@ -40,6 +41,11 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+  const logoutUser = async () => {
+    await logout();
+    router.push("/welcome");
+  };
 
   return (
     !loading &&
@@ -310,7 +316,7 @@ export default function HomeScreen() {
                 Export Health Data
               </Text>
             </View> */}
-              <View
+              <TouchableOpacity
                 style={{
                   backgroundColor: "#DAF0EE",
                   borderRadius: 12,
@@ -320,6 +326,7 @@ export default function HomeScreen() {
                   flexDirection: "row",
                   gap: 12,
                 }}
+                onPress={logoutUser}
               >
                 <Icon name="log-out" size={20} color="#3B413C" />
 
@@ -332,7 +339,7 @@ export default function HomeScreen() {
                 >
                   Logout
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </SafeAreaView>

@@ -7,7 +7,7 @@ const User = db.User;
 const UserDisease = db.UserDisease;
 const DiaryEntry = db.DiaryEntry;
 const Appointment = db.Appointment;
-const Exam = db.Exam;
+const UserExam = db.UserExam;
 const nodemailer = require("nodemailer");
 
 const cloudinary = require("cloudinary").v2;
@@ -50,7 +50,7 @@ exports.findUser = async (req, res) => {
 
     const diseases = await UserDisease.find({ IDuser: req.params.idU })
       .select("-__v")
-      .populate('IDdisease', '-__v')
+      .populate("IDdisease", "-__v")
       .exec();
 
     const entries = await DiaryEntry.find({ IDuser: req.params.idU })
@@ -59,15 +59,17 @@ exports.findUser = async (req, res) => {
 
     const appointments = await Appointment.find({ IDuser: req.params.idU })
       .select("-__v")
+      .sort({ date: 1 })
       .exec();
 
-    const exams = await Exam.find({ IDuser: req.params.idU })
+    const exams = await UserExam.find({ IDuser: req.params.idU })
       .select("-__v")
+      .populate("IDexam", "-__v")
       .exec();
 
     return res.status(200).json({
       success: true,
-      user: { user, diseases, entries, appointments, exams }
+      user: { user, diseases, entries, appointments, exams },
     });
   } catch (error) {
     handleErrorResponse(res, error);
@@ -290,6 +292,8 @@ exports.login = async (req, res) => {
 
 exports.edit = async (req, res) => {
   try {
+    console.log(req.body);
+
     if (!mongoose.isValidObjectId(req.params.idU))
       return res.status(400).json({
         success: false,
@@ -353,6 +357,7 @@ exports.edit = async (req, res) => {
     });
 
     const updatedUser = await User.findById(req.params.idU);
+    console.log(updatedUser);
 
     return res.status(200).json({
       success: true,

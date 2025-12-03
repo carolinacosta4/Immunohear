@@ -28,7 +28,7 @@ export default function RootLayout() {
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="privacypolicy" options={{ headerShown: false }} />
-        <Stack.Screen name="welcome" options={{ headerShown: false }} />
+        <Stack.Screen name="welcome" options={{ headerShown: false, gestureEnabled: false  }} />
         <Stack.Screen name="personal" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />

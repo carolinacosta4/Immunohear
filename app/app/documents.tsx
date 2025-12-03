@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system/legacy";
-import { Link, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import * as Sharing from "expo-sharing";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -12,6 +12,8 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
 import CalendarPicker from "react-native-calendar-picker";
+import { useUserStore } from "@/stores/userStore";
+import { format } from "date-fns";
 
 export default function DocumentsPage() {
   const navigation = useNavigation();
@@ -19,19 +21,65 @@ export default function DocumentsPage() {
   const onDateChange = (date: any) => {
     setSelectedDate(date);
   };
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const { getUser, fetchUser } = useUserStore();
+  const [calendarOpened, setCalendarOpened] = useState(false);
+  const [documents, setDocuments] = useState<
+    {
+      IDexam: { _id: ""; name: "" };
+      IDuser: "";
+      _id: "";
+      createdAt: null;
+      file: "";
+      updatedAt: "";
+    }[]
+  >([]);
+  const [filteredDocuments, setFilteredDocuments] = useState<
+    {
+      IDexam: { _id: ""; name: "" };
+      IDuser: "";
+      _id: "";
+      createdAt: null;
+      file: "";
+      updatedAt: "";
+    }[]
+  >([]);
 
-  const medicalDocuments = [
-    {
-      name: "Pure-tone Audiogram",
-      file: "https://res.cloudinary.com/drpx28lld/image/upload/v1762478980/images_lpie2y.png",
-      date: "08 Jan 2025",
-    },
-    {
-      name: "Impedancemetry",
-      file: "https://res.cloudinary.com/drpx28lld/image/upload/v1761787243/Ativo_9_u3fzx3.png",
-      date: "08 Jan 2025",
-    },
-  ];
+  useEffect(() => {
+    if (!documents || loading) return;
+
+    const filteredDocumentsFilter = documents.filter((document) => {
+      const titleMatch = document.IDexam.name
+        .toLowerCase()
+        .startsWith(search.toLowerCase());        
+      const dateMatch = (() => {
+        if (!document.createdAt || !selectedDate) return false;
+        const createdDate = new Date(document.createdAt);
+        const selDate = new Date(selectedDate);
+        createdDate.setHours(0, 0, 0, 0);
+        selDate.setHours(0, 0, 0, 0);
+        return createdDate.getTime() === selDate.getTime();
+      })();      
+      return dateMatch && titleMatch;
+    });
+    console.log(filteredDocumentsFilter);
+
+    setFilteredDocuments(filteredDocumentsFilter);
+  }, [search, selectedDate]);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await getUser();
+      const responseUser = await fetchUser(response.user?.userID);
+      setDocuments(responseUser.exams);
+      setLoading(false);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   const downloadFile = async (url: string, fileName: string) => {
     try {
@@ -66,119 +114,237 @@ export default function DocumentsPage() {
         alert("Failed to download file");
       }
     } catch (err) {
-      console.error("Download error:", err);
       alert("Failed to download file. Please try again.");
     }
   };
 
   return (
-    <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
-      <SafeAreaView>
-        <ScrollView>
-          <View
-            style={{
-              marginBottom: 24,
-              flexDirection: "row",
-              paddingHorizontal: 24,
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
-              <Icon name="chevron-left" size={28} color="#3B413C" />
-            </TouchableOpacity>
-
-            <Text
+    !loading && (
+      <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
+        <SafeAreaView>
+          <ScrollView>
+            <View
               style={{
-                color: "#3B413C",
-                fontFamily: "Kaleko-Bold",
-                fontSize: 32,
+                marginBottom: 24,
+                flexDirection: "row",
+                paddingHorizontal: 24,
+                alignItems: "center",
+                gap: 4,
               }}
             >
-              Medical Documents
-            </Text>
-          </View>
-
-          <View style={{ gap: 12, marginBottom: 35, paddingHorizontal: 34 }}>
-            <View>
-              <TextInput
-                style={{
-                  flex: 1,
-                  fontSize: 14,
-                  fontFamily: "Antebas-Regular",
-                  color: "#635C54",
-                  borderColor: "#635C54",
-                  borderWidth: 1,
-                  padding: 8,
-                  borderRadius: 8,
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
                 }}
-                placeholder="Search..."
-                placeholderTextColor={"#3B413C"}
-                // onChangeText={handleSearchChange}
-              />
-              <CalendarPicker onDateChange={onDateChange} />
+              >
+                <Icon name="chevron-left" size={28} color="#3B413C" />
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: "#3B413C",
+                  fontFamily: "Kaleko-Bold",
+                  fontSize: 32,
+                }}
+              >
+                Medical Documents
+              </Text>
             </View>
-            {medicalDocuments.map((documents) => (
-              <Fragment key={documents.name}>
-                <View
+
+            <View style={{ gap: 12, marginBottom: 35, paddingHorizontal: 34 }}>
+              <View style={{ flex: 1, flexDirection: "row", gap: 10 }}>
+                <TextInput
                   style={{
-                    backgroundColor: "#DAF0EE",
-                    padding: 20,
-                    borderRadius: 12,
-                    gap: 12,
+                    width: "70%",
+                    fontSize: 14,
+                    fontFamily: "Antebas-Regular",
+                    color: "#635C54",
+                    borderColor: "#635C54",
+                    borderWidth: 1,
+                    padding: 8,
+                    borderRadius: 8,
                   }}
-                >
-                  <View style={{ gap: 4 }}>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Kaleko-Bold",
-                        fontSize: 18,
-                      }}
-                    >
-                      {documents.name}
-                    </Text>
+                  placeholder="Search..."
+                  placeholderTextColor={"#3B413C"}
+                  value={search}
+                  onChangeText={setSearch}
+                />
 
-                    <Text
-                      style={{
-                        color: "#9DB5B2",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Confirmation date: {documents.date}
-                    </Text>
-                  </View>
-
+                <View style={{ width: "26%" }}>
                   <TouchableOpacity
-                    onPress={() => downloadFile(documents.file, documents.name)}
                     style={{
-                      flexDirection: "row",
-                      gap: 6,
-                      alignItems: "center",
+                      borderColor: "#635C54",
+                      borderWidth: 1,
+                      padding: 8,
+                      borderRadius: 8,
                     }}
+                    onPress={() => {setCalendarOpened(!calendarOpened); setSelectedDate(null)}}
                   >
-                    <Icon name="download" size={15} />
                     <Text
                       style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 16,
+                        fontSize: 14,
+                        fontFamily: "Antebas-Regular",
+                        color: "#635C54",
                       }}
                     >
-                      Download
+                      {selectedDate !== null ? format(selectedDate, "yyyy-MM-dd") : 'Date'}
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </Fragment>
-            ))}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+              </View>
+              {calendarOpened && (
+                <View
+                  style={{
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <CalendarPicker
+                    onDateChange={onDateChange}
+                    headerWrapperStyle={{ paddingHorizontal: 34 }}
+                    dayLabelsWrapper={{ paddingHorizontal: 34 }}
+                    previousTitle="‹"
+                    nextTitle="›"
+                  />
+                </View>
+              )}
+              {search === "" && selectedDate === null && documents.length !== 0 ? (
+                documents.map((document) => (
+                  <Fragment key={document._id}>
+                    <View
+                      style={{
+                        backgroundColor: "#DAF0EE",
+                        padding: 20,
+                        borderRadius: 12,
+                        gap: 12,
+                      }}
+                    >
+                      <View style={{ gap: 4 }}>
+                        <Text
+                          style={{
+                            color: "#3B413C",
+                            fontFamily: "Kaleko-Bold",
+                            fontSize: 18,
+                          }}
+                        >
+                          {document.IDexam.name}
+                        </Text>
+
+                        <Text
+                          style={{
+                            color: "#9DB5B2",
+                            fontFamily: "Antebas-Regular",
+                            fontSize: 12,
+                          }}
+                        >
+                          Confirmation date: {document.createdAt}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() =>
+                          downloadFile(document.file, document.IDexam.name)
+                        }
+                        style={{
+                          flexDirection: "row",
+                          gap: 6,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Icon name="download" size={15} />
+                        <Text
+                          style={{
+                            color: "#3B413C",
+                            fontFamily: "Antebas-Medium",
+                            fontSize: 16,
+                          }}
+                        >
+                          Download
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Fragment>
+                ))
+              ) : filteredDocuments.length !== 0 ? (
+                filteredDocuments.map((document) => (
+                  <Fragment key={document._id}>
+                    <View
+                      style={{
+                        backgroundColor: "#DAF0EE",
+                        padding: 20,
+                        borderRadius: 12,
+                        gap: 12,
+                      }}
+                    >
+                      <View style={{ gap: 4 }}>
+                        <Text
+                          style={{
+                            color: "#3B413C",
+                            fontFamily: "Kaleko-Bold",
+                            fontSize: 18,
+                          }}
+                        >
+                          {document.IDexam.name}
+                        </Text>
+
+                        <Text
+                          style={{
+                            color: "#9DB5B2",
+                            fontFamily: "Antebas-Regular",
+                            fontSize: 12,
+                          }}
+                        >
+                          Confirmation date: {document.createdAt}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() =>
+                          downloadFile(document.file, document.IDexam.name)
+                        }
+                        style={{
+                          flexDirection: "row",
+                          gap: 6,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Icon name="download" size={15} />
+                        <Text
+                          style={{
+                            color: "#3B413C",
+                            fontFamily: "Antebas-Medium",
+                            fontSize: 16,
+                          }}
+                        >
+                          Download
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Fragment>
+                ))
+              ) : (
+                <View
+                  style={{
+                    gap: 8,
+                    marginTop: 15,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                      textAlign: "center",
+                      fontSize: 22,
+                    }}
+                  >
+                    No exams found
+                  </Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    )
   );
 }
