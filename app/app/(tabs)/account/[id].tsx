@@ -3,43 +3,26 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
 import { Link, useRouter } from "expo-router";
 import { useUserStore } from "@/stores/userStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { getUser, fetchUser, logout } = useUserStore();
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{
-    _id: "";
-    email: "";
-    isDeactivated: false;
-    language: "";
-    name: "";
-    profilePicture: "";
-  }>();
-  const [userDisease, setUserDisease] = useState<{
-    IDdisease: { _id: ""; description: ""; name: ""; type: "" };
-    IDuser: "";
-    _id: "";
-    affected: "";
-    createdAt: "";
-    tinnitus: false;
-    updatedAt: "";
-    vestibular: false;
-  }>();
+  const { getUser, fetchUser, logout, userInfo, id: storedId } = useUserStore();
 
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = async (userID: string) => {
     try {
-      const response = await getUser();
-      const responseUser = await fetchUser(response.user?.userID);
-      setUser(responseUser.user);
-      setUserDisease(responseUser.diseases);
-      setLoading(false);
+      await fetchUser(userID);
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchUserInfo();
+    async function init() {
+      const response = await getUser();
+      if (response?.user?.userID) {
+        fetchUserInfo(response.user.userID);
+      }
+    }
+    init();
   }, []);
 
   const logoutUser = async () => {
@@ -48,8 +31,7 @@ export default function HomeScreen() {
   };
 
   return (
-    !loading &&
-    user && (
+    userInfo ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView style={{ paddingHorizontal: 34 }}>
@@ -66,7 +48,7 @@ export default function HomeScreen() {
             </View>
             <View style={{ alignItems: "center", gap: 8, marginBottom: 35 }}>
               <Image
-                source={{ uri: user.profilePicture }}
+                source={{ uri: userInfo.user.profilePicture }}
                 style={{ borderRadius: 50, width: 100, height: 100 }}
               />
               <View style={{ gap: 8 }}>
@@ -79,7 +61,7 @@ export default function HomeScreen() {
                       color: "#3B413C",
                     }}
                   >
-                    {user.name}
+                    {userInfo.user.name}
                   </Text>
                   <Text
                     style={{
@@ -89,7 +71,7 @@ export default function HomeScreen() {
                       color: "#9DB5B2",
                     }}
                   >
-                    {user.email}
+                    {userInfo.user.email}
                   </Text>
                 </View>
                 <View
@@ -100,7 +82,7 @@ export default function HomeScreen() {
                     justifyContent: "center",
                   }}
                 >
-                  {userDisease.map((disease) => (
+                  {userInfo.diseases.map((disease) => (
                     <View key={disease.IDdisease._id}>
                       <Text
                         style={{
@@ -344,6 +326,8 @@ export default function HomeScreen() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
+    ) : (
+      <LoadingScreen />
     )
   );
 }

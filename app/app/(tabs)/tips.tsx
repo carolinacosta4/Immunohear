@@ -1,3 +1,4 @@
+import LoadingScreen from "@/components/Loading";
 import { Category } from "@/interfaces/Category";
 import { Tip } from "@/interfaces/Tip";
 import { useTipsStore } from "@/stores/tipsStore";
@@ -73,7 +74,7 @@ export default function TipsPage() {
   }, [tips, selectedCategory, searchTip]);
 
   return (
-    !loading && (
+    !loading ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView>
@@ -398,6 +399,6 @@ export default function TipsPage() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    ) : <LoadingScreen />
   );
 }

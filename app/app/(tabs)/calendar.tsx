@@ -1,3 +1,4 @@
+import LoadingScreen from "@/components/Loading";
 import { useAppointmentStore } from "@/stores/appointmentsStore";
 import { useUserStore } from "@/stores/userStore";
 import { format, getMonth } from "date-fns";
@@ -105,7 +106,7 @@ export default function CalendarScreen() {
   }, [currentDate, visibleMonth, entries, daysWithEntries, loading]);
 
   return (
-    !loading && (
+    !loading ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView>
@@ -285,6 +286,6 @@ export default function CalendarScreen() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    ) : <LoadingScreen />
   );
 }

@@ -13,6 +13,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
 import * as ImagePicker from "expo-image-picker";
+import LoadingScreen from "@/components/Loading";
 
 export default function PersonalInformationPage() {
   const navigation = useNavigation();
@@ -129,7 +130,7 @@ export default function PersonalInformationPage() {
   };
 
   return (
-    !loading && (
+    !loading ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView>
@@ -352,6 +353,6 @@ export default function PersonalInformationPage() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    ) : <LoadingScreen />
   );
 }

@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import { Tabs, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import IconBulb from "react-native-vector-icons/Octicons";
@@ -8,26 +8,25 @@ import IconBulb from "react-native-vector-icons/Octicons";
 const { width, height } = Dimensions.get("window");
 
 export default function TabLayout() {
-  const { getUser, fetchUser } = useUserStore();
+  const { getUser, fetchUser, userInfo, id } = useUserStore();
   const router = useRouter();
-  const [user, setUser] = useState();
 
   useEffect(() => {
     async function loadUser() {
       const response = await getUser();
-      if (response.logged === false) {
+      if (response?.logged === false) {
         router.push("/welcome");
       } else {
-        fetchUserInfo(response.user.userID);
+        fetchUserInfo(response?.user?.userID);
       }
     }
     loadUser();
   }, [getUser]);
 
-  const fetchUserInfo = async (id) => {
+  const fetchUserInfo = async (userID?: string) => {
+    if (!userID) return;
     try {
-      const response = await fetchUser(id);
-      setUser(response);
+      await fetchUser(userID);
     } catch (error) {}
   };
 
@@ -140,7 +139,7 @@ export default function TabLayout() {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("account/[id]", { id: user?.userID });
+            navigation.navigate("account/[id]", { id: id });
           },
         })}
       />

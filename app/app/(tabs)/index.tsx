@@ -1,53 +1,50 @@
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
-import { User } from "@/interfaces/User";
 import NextAppointment from "@/components/NextAppointment";
 import QuickActions from "@/components/QuickActions";
 import YourDiagnosis from "@/components/YourDiagnosis";
-import { getMonth } from "date-fns";
-const { width, height } = Dimensions.get("window");
+import LoadingScreen from "@/components/Loading";
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { fetchUser, getUser } = useUserStore();
-  const [user, setUser] = useState<User>();
+  const { fetchUser, getUser, userInfo } = useUserStore();
   const [futureEntries, setFutureEntries] = useState([]);
-  const today = new Date();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadUser() {
       const response = await getUser();
-      if (response.logged === false) {
+      if (response?.logged === false) {
         router.push("/welcome");
       } else {
-        fetchUserInfo(response.user.userID);
+        fetchUserInfo(response?.user?.userID);
       }
     }
     loadUser();
   }, [getUser]);
 
-  const fetchUserInfo = async (id) => {
+  const fetchUserInfo = async (userID: string) => {
     try {
-      const response = await fetchUser(id);
+      const response = await fetchUser(userID);
+      
+      const today = new Date();
       setFutureEntries(
-        today.getMonth() === getMonth(new Date())
+        today.getMonth() === new Date().getMonth()
           ? response.appointments.filter(
-              (appointment) => new Date(appointment.date) > new Date()
+              (appointment: any) => new Date(appointment.date) > new Date()
             )
           : []
       );
-      setUser(response);
       setLoading(false);
     } catch (error) {}
   };
 
   return (
-    !loading &&
-    user !== undefined && (
+    !loading ? (
+    userInfo !== undefined && (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView
@@ -71,17 +68,17 @@ export default function HomeScreen() {
                   fontSize: 38,
                 }}
               >
-                {user.user.name}
+                {userInfo.user.name}
               </Text>
             </View>
             {futureEntries.length !== 0 && (
               <NextAppointment appointments={futureEntries} />
             )}
             <QuickActions />
-            <YourDiagnosis diagnosis={user.diseases} />
+            <YourDiagnosis diagnosis={userInfo.diseases} />
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    )) : <LoadingScreen />
   );
 }

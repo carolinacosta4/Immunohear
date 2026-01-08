@@ -1,6 +1,7 @@
+import LoadingScreen from "@/components/Loading";
 import { useDiaryStore } from "@/stores/diaryStore";
 import { useUserStore } from "@/stores/userStore";
-import { addDays, format, isBefore, startOfDay, startOfWeek } from "date-fns";
+import { addDays, addWeeks, format, isBefore, startOfDay, startOfWeek, subWeeks } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import {
   Dimensions,
@@ -37,7 +38,7 @@ export default function HomeScreen() {
     },
   });
   const screenWidth = Dimensions.get("window").width;
-  const calendarWidth = screenWidth - 24;
+  const calendarWidth = screenWidth - 24 - 60; // Adjust for arrows
   const { fetchUserEntries, createEntry, fetchFeelings } = useDiaryStore();
   const [user, setUser] = useState<{ token: string; userID: string }>();
   const [loading, setLoading] = useState(true);
@@ -205,89 +206,112 @@ export default function HomeScreen() {
     }
   };
 
-  return (
-    !loading && (
-      <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
-        <SafeAreaView>
-          <ScrollView
-            horizontal={false}
-            scrollEnabled={true}
-            nestedScrollEnabled={false}
-            showsHorizontalScrollIndicator={false}
-          >
-            <View style={{ marginBottom: 24, paddingHorizontal: 34 }}>
-              <Text
+  return !loading ? (
+    <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
+      <SafeAreaView>
+        <ScrollView
+          horizontal={false}
+          scrollEnabled={true}
+          nestedScrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          <View style={{ marginBottom: 24, paddingHorizontal: 34 }}>
+            <Text
+              style={{
+                color: "#3B413C",
+                fontFamily: "Kaleko-Bold",
+                fontSize: 32,
+              }}
+            >
+              Diary
+            </Text>
+          </View>
+
+          <View style={{ paddingHorizontal: 0 }}>
+            <CalendarProvider
+              date={effectiveSelectedDate}
+              onDateChanged={(date) => {
+                const newDate = format(new Date(date), "yyyy-MM-dd");
+                const today = format(new Date(todayStart), "yyyy-MM-dd");
+                const newDateObj = new Date(date);
+                const weekStart = startOfWeek(newDateObj, {
+                  weekStartsOn: 1,
+                });
+
+                setNoEntryFound(false);
+                if (!daysWithEntries.includes(newDate) && newDate !== today) {
+                  setNoEntryFound(true);
+                }
+                const weekStartStr = format(weekStart, "yyyy-MM-dd");
+
+                // Check if this is just a week navigation (date changed to first day of week or today)
+                const isWeekNavigation =
+                  weekStartStr === newDate || newDate === todayStr;
+
+                // Check if this is the same week as the current week
+                const currentWeekStart = startOfWeek(currentWeekDate, {
+                  weekStartsOn: 1,
+                });
+                const currentWeekStartStr = format(
+                  currentWeekStart,
+                  "yyyy-MM-dd"
+                );
+                const sameWeek = weekStartStr === currentWeekStartStr;
+
+                // Check if this is the current week (contains today)
+                const todayWeekStart = startOfWeek(today, {
+                  weekStartsOn: 1,
+                });
+                const todayWeekStartStr = format(todayWeekStart, "yyyy-MM-dd");
+                const isCurrentWeek = weekStartStr === todayWeekStartStr;
+
+                if (isCurrentWeek) {
+                  setCurrentWeekDate(today);
+                  setSelectedDate(todayStr);
+                } else if (isWeekNavigation && !sameWeek) {
+                  setCurrentWeekDate(newDateObj);
+                } else if (isWeekNavigation && sameWeek && !isCurrentWeek) {
+                  setCurrentWeekDate(newDateObj);
+                }
+              }}
+              disabledOpacity={0.6}
+              theme={{
+                todayTextColor: "#FF5C5C",
+                textDayFontSize: 12,
+                textMonthFontSize: 12,
+                textDayHeaderFontSize: 12,
+                textDayHeaderFontFamily: "Antebas-Regular",
+                textMonthFontFamily: "Antebas-Regular",
+                textDayFontFamily: "Antebas-Regular",
+              }}
+            >
+              <View
                 style={{
-                  color: "#3B413C",
-                  fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 32
                 }}
               >
-                Diary
-              </Text>
-            </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    const prevWeek = subWeeks(currentWeekDate, 1);
+                    const weekStart = startOfWeek(prevWeek, { weekStartsOn: 1 });
+                    setCurrentWeekDate(weekStart);
+                    setSelectedDate(format(weekStart, "yyyy-MM-dd"));
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                    }}
+                  >
+                    {"<"}
+                  </Text>
+                </TouchableOpacity>
 
-            <View style={{ paddingHorizontal: 12 }}>
-              <CalendarProvider
-                date={effectiveSelectedDate}
-                onDateChanged={(date) => {
-                  const newDate = format(new Date(date), "yyyy-MM-dd");
-                  const today = format(new Date(todayStart), "yyyy-MM-dd");
-                  const newDateObj = new Date(date);
-                  const weekStart = startOfWeek(newDateObj, {
-                    weekStartsOn: 1,
-                  });
-
-                  setNoEntryFound(false);
-                  if (!daysWithEntries.includes(newDate) && newDate !== today) {
-                    setNoEntryFound(true);
-                  }
-                  const weekStartStr = format(weekStart, "yyyy-MM-dd");
-
-                  // Check if this is just a week navigation (date changed to first day of week or today)
-                  const isWeekNavigation =
-                    weekStartStr === newDate || newDate === todayStr;
-
-                  // Check if this is the same week as the current week
-                  const currentWeekStart = startOfWeek(currentWeekDate, {
-                    weekStartsOn: 1,
-                  });
-                  const currentWeekStartStr = format(
-                    currentWeekStart,
-                    "yyyy-MM-dd"
-                  );
-                  const sameWeek = weekStartStr === currentWeekStartStr;
-
-                  // Check if this is the current week (contains today)
-                  const todayWeekStart = startOfWeek(today, {
-                    weekStartsOn: 1,
-                  });
-                  const todayWeekStartStr = format(
-                    todayWeekStart,
-                    "yyyy-MM-dd"
-                  );
-                  const isCurrentWeek = weekStartStr === todayWeekStartStr;
-
-                  if (isCurrentWeek) {
-                    setCurrentWeekDate(today);
-                    setSelectedDate(todayStr);
-                  } else if (isWeekNavigation && !sameWeek) {
-                    setCurrentWeekDate(newDateObj);
-                  } else if (isWeekNavigation && sameWeek && !isCurrentWeek) {
-                    setCurrentWeekDate(newDateObj);
-                  }
-                }}
-                disabledOpacity={0.6}
-                theme={{
-                  todayTextColor: "#FF5C5C",
-                  textDayFontSize: 12,
-                  textMonthFontSize: 12,
-                  textDayHeaderFontSize: 12,
-                  textDayHeaderFontFamily: "Antebas-Regular",
-                  textMonthFontFamily: "Antebas-Regular",
-                  textDayFontFamily: "Antebas-Regular",
-                }}
-              >
                 <View style={{ overflow: "hidden", width: calendarWidth }}>
                   <WeekCalendar
                     firstDay={1}
@@ -297,7 +321,7 @@ export default function HomeScreen() {
                     horizontal={false}
                     pagingEnabled={false}
                     enableSwipeMonths={false}
-                    hideArrows={false}
+                    hideArrows={true}
                     bounces={false}
                     calendarWidth={calendarWidth}
                     onDayPress={(day) => {
@@ -371,275 +395,297 @@ export default function HomeScreen() {
                     allowShadow={false}
                   />
                 </View>
-              </CalendarProvider>
-            </View>
 
-            {!noEntryFound ? (
-              showEntry ? (
-                <>
-                  <View
+                <TouchableOpacity
+                  onPress={() => {
+                    const nextWeek = addWeeks(currentWeekDate, 1);
+                    const weekStart = startOfWeek(nextWeek, { weekStartsOn: 1 });
+                    if (weekStart > todayStart) return;
+                    setCurrentWeekDate(weekStart);
+                    setSelectedDate(format(weekStart, "yyyy-MM-dd"));
+                  }}
+                >
+                  <Text
                     style={{
-                      gap: 8,
-                      marginBottom: 35,
-                      paddingHorizontal: 34,
+                      fontSize: 24,
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 22,
-                      }}
-                    >
-                      You were feeling
-                    </Text>
+                    {">"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </CalendarProvider>
+          </View>
 
-                    <View
+          {!noEntryFound ? (
+            showEntry ? (
+              <>
+                <View
+                  style={{
+                    gap: 8,
+                    marginBottom: 35,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                      fontSize: 22,
+                    }}
+                  >
+                    You were feeling
+                  </Text>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      padding: 12,
+                      borderWidth: 1,
+                      borderColor: "#94D1BE",
+                      borderRadius: 12,
+                      gap: 18,
+                      alignItems: "center",
+                    }}
+                  >
+                    <View>
+                      <Image
+                        style={{ width: 60, height: 60 }}
+                        source={{ uri: dayEntry.IDFeeling.image }}
+                      />
+                    </View>
+                    <View style={{ gap: 4, flexShrink: 1 }}>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 18,
+                        }}
+                      >
+                        {dayEntry.IDFeeling.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Regular",
+                          fontSize: 13,
+                          flexShrink: 1,
+                        }}
+                      >
+                        {dayEntry.IDFeeling.description}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    gap: 8,
+                    marginBottom: 35,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                      fontSize: 22,
+                    }}
+                  >
+                    Your thoughts
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Regular",
+                      fontSize: 16,
+                    }}
+                  >
+                    {dayEntry.text}
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View
+                  style={{
+                    gap: 8,
+                    marginBottom: 35,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                      fontSize: 22,
+                    }}
+                  >
+                    How are you feeling?
+                  </Text>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {feelings.map((feeling) => (
+                      <View key={feeling._id}>
+                        <TouchableOpacity
+                          onPress={() => setFeelingID(feeling._id)}
+                        >
+                          <Image
+                            style={{ width: 55, height: 55 }}
+                            source={{ uri: feeling.image }}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    gap: 8,
+                    marginBottom: 20,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#3B413C",
+                      fontFamily: "Antebas-Medium",
+                      fontSize: 22,
+                    }}
+                  >
+                    Write your thoughts
+                  </Text>
+
+                  <TextInput
+                    style={{
+                      flex: 1,
+                      fontSize: 14,
+                      fontFamily: "Antebas-Regular",
+                      color: "#3B413C",
+                      borderColor: "#3B413C",
+                      borderWidth: 1.5,
+                      padding: 12,
+                      borderRadius: 18,
+                      minHeight: 250,
+                    }}
+                    multiline
+                    placeholder="How are you feeling today? How is Systemic lupus erythematosus affecting your day?"
+                    placeholderTextColor={"#9DB5B2"}
+                    onChangeText={setNewThoughts}
+                    value={newThoughts}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    gap: 8,
+                    marginBottom: 10,
+                    paddingHorizontal: 34,
+                  }}
+                >
+                  {newThoughts === "" ||
+                  feelingID === null ||
+                  feelingID === undefined ? (
+                    <TouchableOpacity
+                      onPress={createNewEntry}
                       style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        padding: 12,
-                        borderWidth: 1,
-                        borderColor: "#94D1BE",
+                        backgroundColor: "#94D1BE80",
+                        paddingVertical: 14,
                         borderRadius: 12,
-                        gap: 18,
                         alignItems: "center",
                       }}
+                      disabled
                     >
-                      <View>
-                        <Image
-                          style={{ width: 60, height: 60 }}
-                          source={{ uri: dayEntry.IDFeeling.image }}
-                        />
-                      </View>
-                      <View style={{ gap: 4, flexShrink: 1 }}>
-                        <Text
-                          style={{
-                            color: "#3B413C",
-                            fontFamily: "Antebas-Medium",
-                            fontSize: 18,
-                          }}
-                        >
-                          {dayEntry.IDFeeling.name}
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#3B413C",
-                            fontFamily: "Antebas-Regular",
-                            fontSize: 13,
-                            flexShrink: 1,
-                          }}
-                        >
-                          {dayEntry.IDFeeling.description}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      gap: 8,
-                      marginBottom: 35,
-                      paddingHorizontal: 34,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 22,
-                      }}
-                    >
-                      Your thoughts
-                    </Text>
-
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 16,
-                      }}
-                    >
-                      {dayEntry.text}
-                    </Text>
-                  </View>
-                </>
-              ) : (
-                <>
-                  <View
-                    style={{
-                      gap: 8,
-                      marginBottom: 35,
-                      paddingHorizontal: 34,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 22,
-                      }}
-                    >
-                      How are you feeling?
-                    </Text>
-
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      {feelings.map((feeling) => (
-                        <View key={feeling._id}>
-                          <TouchableOpacity
-                            onPress={() => setFeelingID(feeling._id)}
-                          >
-                            <Image
-                              style={{ width: 55, height: 55 }}
-                              source={{ uri: feeling.image }}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      gap: 8,
-                      marginBottom: 20,
-                      paddingHorizontal: 34,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 22,
-                      }}
-                    >
-                      Write your thoughts
-                    </Text>
-
-                    <TextInput
-                      style={{
-                        flex: 1,
-                        fontSize: 14,
-                        fontFamily: "Antebas-Regular",
-                        color: "#3B413C",
-                        borderColor: "#3B413C",
-                        borderWidth: 1.5,
-                        padding: 12,
-                        borderRadius: 18,
-                        minHeight: 250,
-                      }}
-                      multiline
-                      placeholder="How are you feeling today? How is Systemic lupus erythematosus affecting your day?"
-                      placeholderTextColor={"#9DB5B2"}
-                      onChangeText={setNewThoughts}
-                      value={newThoughts}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      gap: 8,
-                      marginBottom: 10,
-                      paddingHorizontal: 34,
-                    }}
-                  >
-                    {newThoughts === "" ||
-                    feelingID === null ||
-                    feelingID === undefined ? (
-                      <TouchableOpacity
-                        onPress={createNewEntry}
+                      <Text
                         style={{
-                          backgroundColor: "#94D1BE80",
-                          paddingVertical: 14,
-                          borderRadius: 12,
-                          alignItems: "center",
-                        }}
-                        disabled
-                      >
-                        <Text
-                          style={{
-                            color: "#fff",
-                            fontFamily: "Antebas-Medium",
-                            fontSize: 18,
-                          }}
-                        >
-                          Save
-                        </Text>
-                      </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        onPress={createNewEntry}
-                        style={{
-                          backgroundColor: "#94D1BE",
-                          paddingVertical: 14,
-                          borderRadius: 12,
-                          alignItems: "center",
+                          color: "#fff",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 18,
                         }}
                       >
-                        <Text
-                          style={{
-                            color: "#fff",
-                            fontFamily: "Antebas-Medium",
-                            fontSize: 18,
-                          }}
-                        >
-                          Save
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                  {showConfirmation && (
-                    <View
+                        Save
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={createNewEntry}
                       style={{
-                        gap: 8,
-                        marginBottom: 35,
-                        paddingHorizontal: 34,
+                        backgroundColor: "#94D1BE",
+                        paddingVertical: 14,
+                        borderRadius: 12,
+                        alignItems: "center",
                       }}
                     >
                       <Text
                         style={{
-                          color: "#94D1BE",
+                          color: "#fff",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 12,
-                          textAlign: "center",
+                          fontSize: 18,
                         }}
                       >
-                        Entry created successfully
+                        Save
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   )}
-                </>
-              )
-            ) : (
-              <View
+                </View>
+                {showConfirmation && (
+                  <View
+                    style={{
+                      gap: 8,
+                      marginBottom: 35,
+                      paddingHorizontal: 34,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#94D1BE",
+                        fontFamily: "Antebas-Medium",
+                        fontSize: 12,
+                        textAlign: "center",
+                      }}
+                    >
+                      Entry created successfully
+                    </Text>
+                  </View>
+                )}
+              </>
+            )
+          ) : (
+            <View
+              style={{
+                gap: 8,
+                marginTop: 15,
+                paddingHorizontal: 34,
+              }}
+            >
+              <Text
                 style={{
-                  gap: 8,
-                  marginTop: 15,
-                  paddingHorizontal: 34,
+                  color: "#3B413C",
+                  fontFamily: "Antebas-Medium",
+                  textAlign: "center",
+                  fontSize: 22,
                 }}
               >
-                <Text
-                  style={{
-                    color: "#3B413C",
-                    fontFamily: "Antebas-Medium",
-                    textAlign: "center",
-                    fontSize: 22,
-                  }}
-                >
-                  No entry found
-                </Text>
-              </View>
-            )}
-          </ScrollView>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    )
+                No entry found
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  ) : (
+    <LoadingScreen />
   );
 }
 

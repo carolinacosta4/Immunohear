@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/Feather";
 import {useTipsStore} from "@/stores/tipsStore";
 import { useEffect, useState } from "react";
 import { Tip } from "@/interfaces/Tip";
+import LoadingScreen from "@/components/Loading";
 
 export default function TipPage() {
   const navigation = useNavigation();
@@ -34,7 +35,7 @@ export default function TipPage() {
   };
 
   return (
-    !loading &&
+    !loading ? (
     tip && (
       <ScrollView style={{ backgroundColor: "#F3F9F8", flex: 1 }}>
         <ImageBackground
@@ -172,6 +173,6 @@ export default function TipPage() {
           </View>
         </View>
       </ScrollView>
-    )
+    )) : <LoadingScreen />
   );
 }

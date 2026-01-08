@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Feather";
 import CalendarPicker from "react-native-calendar-picker";
 import { useUserStore } from "@/stores/userStore";
 import { format } from "date-fns";
+import LoadingScreen from "@/components/Loading";
 
 export default function DocumentsPage() {
   const navigation = useNavigation();
@@ -119,7 +120,7 @@ export default function DocumentsPage() {
   };
 
   return (
-    !loading && (
+    !loading ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView>
@@ -345,6 +346,6 @@ export default function DocumentsPage() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    ) : <LoadingScreen />
   );
 }

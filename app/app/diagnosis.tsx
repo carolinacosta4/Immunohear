@@ -11,6 +11,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
 import { format } from "date-fns";
+import LoadingScreen from "@/components/Loading";
 
 export default function DiagnosisPage() {
   const [openIDs, setOpenIDs] = useState<string[]>([]);
@@ -46,36 +47,9 @@ export default function DiagnosisPage() {
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
-  //   {
-  //     IDuser: "6902c7414f575e83c8c2bf4f",
-  //     IDdisease: {
-  //       _id: "6902b9ba65562775b1e064f9",
-  //       name: "Systemic Lupus Erythematosus",
-  //       type: "Sensorineural",
-  //       description:
-  //         "Systemic Lupus Erythematosus is an autoimmune condition where the body’s immune system attacks healthy cells by mistake. It can cause tiredness, joint pain, skin rashes, and other symptoms that come and go. Everyone’s experience is different — some days are good, some are tougher but with care and rest, it can be managed.",
-  //     },
-  //     vestibular: false,
-  //     affected: "Bilateral",
-  //     tinnitus: true,
-  //   },
-  //   {
-  //     IDuser: "6902c7414f575e83c8c2bf4f",
-  //     IDdisease: {
-  //       _id: "6902b9ba65562775b1e063f9",
-  //       name: "Cogan Syndrome",
-  //       type: "Sensorineural",
-  //       description:
-  //         "Cogan Syndrome is a rare autoimmune condition that mainly affects the eyes and inner ear. It can cause dizziness, hearing changes, and vision problems. Symptoms may appear suddenly or come and go, but early treatment can help protect both hearing and sight.",
-  //     },
-  //     vestibular: true,
-  //     affected: "Unilateral",
-  //     tinnitus: true,
-  //   },
-  // ];
 
   return (
-    !loading && (
+    !loading ? (
       <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
         <SafeAreaView>
           <ScrollView>
@@ -270,6 +244,6 @@ export default function DiagnosisPage() {
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
-    )
+    ) : <LoadingScreen />
   );
 }

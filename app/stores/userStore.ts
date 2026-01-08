@@ -8,12 +8,15 @@ interface UserState {
   userInfo: User | undefined;
   logged: boolean;
   id: string | undefined;
-  getUser: () => {
-    user: { token: string; userID: string } | undefined;
-    logged: boolean;
-    id: string | undefined;
-  };
-  fetchUser: (userID: string) => User;
+  getUser: () => Promise<
+    | {
+        user: { token: string; userID: string } | undefined;
+        logged: boolean;
+        id: string | undefined;
+      }
+    | undefined
+  >;
+  fetchUser: (userID: string, forceRefresh?: boolean) => Promise<User>;
   addUser: (user: any) => Promise<void>;
   loginUser: (email: string, password: string) => Promise<any>;
   logout: () => void;
@@ -54,10 +57,10 @@ export const useUserStore = create<UserState>((set, get) => ({
       console.error(error);
     }
   },
-  fetchUser: async (userID) => {
+  fetchUser: async (userID, forceRefresh = false) => {
     try {
       const existingUser = get().userInfo;
-      if (existingUser === undefined) {
+      if (existingUser === undefined || forceRefresh) {
         const response = await api.get(`users/${userID}`);
         set({ userInfo: response.data.user });
         return response.data.user;
