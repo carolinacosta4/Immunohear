@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import Icon from "react-native-vector-icons/Feather";
 import {useTipsStore} from "@/stores/tipsStore";
 import { useEffect, useState } from "react";
@@ -19,14 +19,15 @@ export default function TipPage() {
   const { fetchTip } = useTipsStore();
   const [loading, setLoading] = useState(true);
   const [tip, setTip] = useState<Tip>();
+  const {tipId} = useLocalSearchParams()
 
   useEffect(() => {
     fetchTipsApi();
   }, []);
 
   const fetchTipsApi = async () => {
-    try {
-      const response = await fetchTip("6902ae83974673d88741313d");
+    try {      
+      const response = await fetchTip(tipId);
       setTip(response);
       setLoading(false);
     } catch (error) {

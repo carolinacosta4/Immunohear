@@ -55,7 +55,7 @@ export default function PersonalInformationPage() {
     try {
       if (!user) return;
       const response = await updateUser(user.userID, body, user.token);
-      if (response.success) {
+      if (response !== undefined && response.success) {
         setShowConfirmation(true);
 
         setTimeout(() => {

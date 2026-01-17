@@ -169,7 +169,7 @@ exports.login = async (req, res) => {
       });
 
     const token = jwt.sign({ id: user._id }, config.SECRET, {
-      expiresIn: "3hr",
+      expiresIn: "336hr",
     });
 
     return res.status(200).json({
