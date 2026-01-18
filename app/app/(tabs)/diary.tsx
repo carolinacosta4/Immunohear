@@ -1,7 +1,15 @@
 import LoadingScreen from "@/components/Loading";
 import { useDiaryStore } from "@/stores/diaryStore";
 import { useUserStore } from "@/stores/userStore";
-import { addDays, addWeeks, format, isBefore, startOfDay, startOfWeek, subWeeks } from "date-fns";
+import {
+  addDays,
+  addWeeks,
+  format,
+  isBefore,
+  startOfDay,
+  startOfWeek,
+  subWeeks,
+} from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import {
   Dimensions,
@@ -15,6 +23,7 @@ import {
 } from "react-native";
 import { CalendarProvider, WeekCalendar } from "react-native-calendars";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/Feather";
 
 export default function HomeScreen() {
   const today = new Date();
@@ -38,7 +47,7 @@ export default function HomeScreen() {
     },
   });
   const screenWidth = Dimensions.get("window").width;
-  const calendarWidth = screenWidth - 24 - 60; // Adjust for arrows
+  const calendarWidth = screenWidth - 24 - 80; // Adjust for arrows
   const { fetchUserEntries, createEntry, fetchFeelings } = useDiaryStore();
   const [user, setUser] = useState<{ token: string; userID: string }>();
   const [loading, setLoading] = useState(true);
@@ -54,7 +63,7 @@ export default function HomeScreen() {
   const effectiveSelectedDate = selectedDate || todayStr;
   const markedDates = useMemo(
     () => getMarkedWeek(currentWeekDate, effectiveSelectedDate),
-    [currentWeekDate, effectiveSelectedDate, daysWithEntries, loading, entries]
+    [currentWeekDate, effectiveSelectedDate, daysWithEntries, loading, entries],
   );
 
   const fetchUserInfo = async () => {
@@ -83,26 +92,29 @@ export default function HomeScreen() {
     const response = await fetchUserEntries(user.userID);
     setEntries(response);
 
-    const list = response.map((entry) =>
-      format(new Date(entry.createdAt), "yyyy-MM-dd")
+    const list = response.map((entry: any) =>
+      format(new Date(entry.createdAt), "yyyy-MM-dd"),
     );
     setDaysWithEntries(list);
 
-    const todayStr = format(new Date(), "yyyy-MM-dd");
-    const todayEntry = response.find(
-      (entry) => format(new Date(entry.createdAt), "yyyy-MM-dd") === todayStr
+    const checkDate = selectedDate || todayStr;
+    const existingEntry = response.find(
+      (entry: any) => format(new Date(entry.createdAt), "yyyy-MM-dd") === checkDate,
     );
 
-    if (todayEntry) {
+    if (existingEntry) {
       setShowEntry(true);
-      setSelectedDate(todayStr);
-      setDayEntry(todayEntry);
+      setDayEntry(existingEntry);
       setNoEntryFound(false);
     } else {
       setShowEntry(false);
-      setSelectedDate(todayStr);
       setDayEntry(null);
-      setNoEntryFound(false);
+      // Only show "No entry found" if we are looking at a past day
+      if (checkDate !== todayStr && isBefore(startOfDay(new Date(checkDate)), todayStart)) {
+        setNoEntryFound(true);
+      } else {
+        setNoEntryFound(false);
+      }
     }
 
     setLoading(false);
@@ -197,9 +209,15 @@ export default function HomeScreen() {
     try {
       if (!user) return;
       const response = await createEntry(newThoughts, feelingID, user.token);
-      if (response.success) {
+      if (response && response.success) {
         setShowConfirmation(true);
-        setInterval(() => loadEntries(), 1000);
+        setNewThoughts("");
+        setFeelingID("");
+        // Use a small timeout to let the backend process before refreshing
+        setTimeout(() => {
+          loadEntries();
+          setShowConfirmation(false);
+        }, 1500);
       }
     } catch (error) {
       console.log(error);
@@ -231,48 +249,19 @@ export default function HomeScreen() {
             <CalendarProvider
               date={effectiveSelectedDate}
               onDateChanged={(date) => {
-                const newDate = format(new Date(date), "yyyy-MM-dd");
-                const today = format(new Date(todayStart), "yyyy-MM-dd");
                 const newDateObj = new Date(date);
-                const weekStart = startOfWeek(newDateObj, {
-                  weekStartsOn: 1,
-                });
-
-                setNoEntryFound(false);
-                if (!daysWithEntries.includes(newDate) && newDate !== today) {
-                  setNoEntryFound(true);
-                }
-                const weekStartStr = format(weekStart, "yyyy-MM-dd");
-
-                // Check if this is just a week navigation (date changed to first day of week or today)
-                const isWeekNavigation =
-                  weekStartStr === newDate || newDate === todayStr;
-
-                // Check if this is the same week as the current week
-                const currentWeekStart = startOfWeek(currentWeekDate, {
-                  weekStartsOn: 1,
-                });
-                const currentWeekStartStr = format(
-                  currentWeekStart,
-                  "yyyy-MM-dd"
-                );
-                const sameWeek = weekStartStr === currentWeekStartStr;
-
-                // Check if this is the current week (contains today)
-                const todayWeekStart = startOfWeek(today, {
-                  weekStartsOn: 1,
-                });
-                const todayWeekStartStr = format(todayWeekStart, "yyyy-MM-dd");
-                const isCurrentWeek = weekStartStr === todayWeekStartStr;
-
-                if (isCurrentWeek) {
-                  setCurrentWeekDate(today);
-                  setSelectedDate(todayStr);
-                } else if (isWeekNavigation && !sameWeek) {
-                  setCurrentWeekDate(newDateObj);
-                } else if (isWeekNavigation && sameWeek && !isCurrentWeek) {
+                const newDateStr = format(newDateObj, "yyyy-MM-dd");
+                
+                // If the week changed, update the currentWeekDate
+                const weekStart = startOfWeek(newDateObj, { weekStartsOn: 1 });
+                const currentWeekStart = startOfWeek(currentWeekDate, { weekStartsOn: 1 });
+                
+                if (format(weekStart, "yyyy-MM-dd") !== format(currentWeekStart, "yyyy-MM-dd")) {
                   setCurrentWeekDate(newDateObj);
                 }
+                
+                // Update selected date if it's not today's automatic triggers
+                // (CalendarProvider triggers onDateChanged on mount and sometimes on week change)
               }}
               disabledOpacity={0.6}
               theme={{
@@ -290,13 +279,15 @@ export default function HomeScreen() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  paddingHorizontal: 32
+                  paddingHorizontal: 32,
                 }}
               >
                 <TouchableOpacity
                   onPress={() => {
                     const prevWeek = subWeeks(currentWeekDate, 1);
-                    const weekStart = startOfWeek(prevWeek, { weekStartsOn: 1 });
+                    const weekStart = startOfWeek(prevWeek, {
+                      weekStartsOn: 1,
+                    });
                     setCurrentWeekDate(weekStart);
                     setSelectedDate(format(weekStart, "yyyy-MM-dd"));
                   }}
@@ -308,7 +299,7 @@ export default function HomeScreen() {
                       fontFamily: "Antebas-Medium",
                     }}
                   >
-                    {"<"}
+                    <Icon name="chevron-left" size={24} color="#3B413C" />
                   </Text>
                 </TouchableOpacity>
 
@@ -327,53 +318,24 @@ export default function HomeScreen() {
                     onDayPress={(day) => {
                       const date = new Date(day.dateString);
                       const dayStart = startOfDay(date);
+                      
+                      if (dayStart > todayStart) return;
+
+                      setSelectedDate(day.dateString);
                       setNoEntryFound(false);
                       setShowEntry(false);
-                      setDayEntry({
-                        IDuser: "",
-                        _v: 0,
-                        _id: "",
-                        createdAt: "",
-                        description: "",
-                        IDFeeling: {
-                          _id: "",
-                          name: "",
-                          description: "",
-                          image: "",
-                        },
-                        text: "",
-                      });
-                      if (date.getTime() !== todayStart.getTime()) {
-                        if (daysWithEntries.includes(day.dateString)) {
-                          setShowEntry(true);
-                          const entry = entries.find(
-                            (entry) =>
-                              format(entry.createdAt, "yyyy-MM-dd") ===
-                              day.dateString
-                          );
-                          setDayEntry(entry);
-                        }
-                      } else {
-                        setShowEntry(false);
-                      }
-                      if (dayStart > todayStart) return;
-                      if (daysWithEntries.includes(day.dateString)) {
-                        setShowEntry(true);
-                        const entry = entries.find(
-                          (entry) =>
-                            format(entry.createdAt, "yyyy-MM-dd") ===
-                            day.dateString
-                        );
-                        setDayEntry(entry);
-                      }
+                      setDayEntry(null);
 
-                      if (
-                        !daysWithEntries.includes(day.dateString) &&
-                        date.getTime() !== todayStart.getTime()
-                      ) {
+                      const entry = entries?.find(
+                        (e: any) => format(new Date(e.createdAt), "yyyy-MM-dd") === day.dateString
+                      );
+
+                      if (entry) {
+                        setShowEntry(true);
+                        setDayEntry(entry);
+                      } else if (day.dateString !== todayStr) {
                         setNoEntryFound(true);
                       }
-                      setSelectedDate(day.dateString);
                     }}
                     style={{
                       backgroundColor: "#F3F9F8",
@@ -381,6 +343,7 @@ export default function HomeScreen() {
                       shadowOpacity: 0,
                       shadowRadius: 0,
                       shadowOffset: { width: 0, height: 0 },
+                      paddingHorizontal: 0,
                     }}
                     theme={{
                       selectedDayBackgroundColor: "#94D1BE",
@@ -399,7 +362,9 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   onPress={() => {
                     const nextWeek = addWeeks(currentWeekDate, 1);
-                    const weekStart = startOfWeek(nextWeek, { weekStartsOn: 1 });
+                    const weekStart = startOfWeek(nextWeek, {
+                      weekStartsOn: 1,
+                    });
                     if (weekStart > todayStart) return;
                     setCurrentWeekDate(weekStart);
                     setSelectedDate(format(weekStart, "yyyy-MM-dd"));
@@ -412,7 +377,7 @@ export default function HomeScreen() {
                       fontFamily: "Antebas-Medium",
                     }}
                   >
-                    {">"}
+                    <Icon name="chevron-right" size={24} color="#3B413C" />
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -540,10 +505,23 @@ export default function HomeScreen() {
                         <TouchableOpacity
                           onPress={() => setFeelingID(feeling._id)}
                         >
-                          <Image
-                            style={{ width: 55, height: 55 }}
-                            source={{ uri: feeling.image }}
-                          />
+                          {feelingID === feeling._id ? (
+                            <Image
+                              style={{
+                                width: 55,
+                                height: 55,
+                                borderColor: "#3B413C50",
+                                borderWidth: 5,
+                                borderRadius: "100%",
+                              }}
+                              source={{ uri: feeling.image }}
+                            />
+                          ) : (
+                            <Image
+                              style={{ width: 55, height: 55 }}
+                              source={{ uri: feeling.image }}
+                            />
+                          )}
                         </TouchableOpacity>
                       </View>
                     ))}
