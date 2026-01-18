@@ -64,8 +64,6 @@ export default function DocumentsPage() {
       })();
       return dateMatch && titleMatch;
     });
-    console.log(filteredDocumentsFilter);
-
     setFilteredDocuments(filteredDocumentsFilter);
   }, [search, selectedDate]);
 
@@ -244,7 +242,7 @@ export default function DocumentsPage() {
                         }}
                       >
                         Confirmation date:{" "}
-                        {format(new Date(document.createdAt), "MMM yyyy")}
+                        {format(new Date(document.createdAt), "dd MMM yyyy")}
                       </Text>
                     </View>
 

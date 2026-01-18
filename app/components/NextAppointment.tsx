@@ -13,9 +13,6 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
   const appointmentDate = new Date(appointments[0].date);
   appointmentDate.setHours(0, 0, 0, 0);
 
-  console.log(appointmentDate);
-  console.log(tomorrow);
-
   return (
     <View>
       <View
