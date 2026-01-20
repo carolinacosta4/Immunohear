@@ -83,7 +83,7 @@ export default function TipsPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  fontSize: 28,
                 }}
               >
                 Tips
@@ -146,7 +146,7 @@ export default function TipsPage() {
                       >
                         <Text
                           style={{
-                            fontSize: 16,
+                            fontSize: 12,
                             fontFamily: "Antebas-Regular",
                             fontWeight: "500",
                             lineHeight: 20,
@@ -183,7 +183,7 @@ export default function TipsPage() {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 22,
+                        fontSize: 18,
                         marginBottom: 12,
                       }}
                     >
@@ -222,7 +222,7 @@ export default function TipsPage() {
                             <Text
                               style={{
                                 color: "#3B413C",
-                                fontSize: 22,
+                                fontSize: 18,
                                 fontFamily: "Kaleko-Bold",
                               }}
                             >
@@ -231,7 +231,7 @@ export default function TipsPage() {
                             <Text
                               style={{
                                 color: "#3B413C",
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontFamily: "Antebas-Regular",
                                 marginTop: 8,
                               }}
@@ -244,12 +244,12 @@ export default function TipsPage() {
                     </View>
                   </View>
 
-                  <View style={{ marginTop: 25 }}>
+                  <View style={{ marginTop: 25, marginBottom: 75 }}>
                     <Text
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 22,
+                        fontSize: 18,
                       }}
                     >
                       Popular tips
@@ -284,6 +284,7 @@ export default function TipsPage() {
                                   style={{
                                     borderRadius: 4,
                                     color: "#9DB5B2",
+                                    fontSize: 10
                                   }}
                                 >
                                   {tip.IDcategory.name}
@@ -299,7 +300,7 @@ export default function TipsPage() {
                                   <Text
                                     style={{
                                       color: "#3B413C",
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontFamily: "Kaleko-Bold",
                                       wordWrap: "break-word",
                                     }}
@@ -355,6 +356,7 @@ export default function TipsPage() {
                             style={{
                               borderRadius: 4,
                               color: "#9DB5B2",
+                              fontSize: 10
                             }}
                           >
                             {tip.IDcategory.name}
@@ -370,7 +372,7 @@ export default function TipsPage() {
                             <Text
                               style={{
                                 color: "#3B413C",
-                                fontSize: 18,
+                                fontSize: 14,
                                 fontFamily: "Kaleko-Bold",
                                 wordWrap: "break-word",
                               }}

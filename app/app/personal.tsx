@@ -155,7 +155,7 @@ export default function PersonalInformationPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  fontSize: 28,
                 }}
               >
                 Personal Information
@@ -202,7 +202,7 @@ export default function PersonalInformationPage() {
                     <Text
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Medium",
                         color: "#635C54",
                       }}
@@ -212,7 +212,7 @@ export default function PersonalInformationPage() {
                     <TextInput
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Regular",
                         color: "#635C54",
                         borderColor: "#635C54",
@@ -230,7 +230,7 @@ export default function PersonalInformationPage() {
                     <Text
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Medium",
                         color: "#635C54",
                       }}
@@ -240,7 +240,7 @@ export default function PersonalInformationPage() {
                     <TextInput
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Regular",
                         color: "#635C54",
                         borderColor: "#635C54",
@@ -258,7 +258,7 @@ export default function PersonalInformationPage() {
                     <Text
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Medium",
                         color: "#635C54",
                       }}
@@ -280,7 +280,7 @@ export default function PersonalInformationPage() {
                       <TextInput
                         style={{
                           flex: 1,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontFamily: "Antebas-Regular",
                           color: "#635C54",
                           padding: 8,
@@ -328,7 +328,7 @@ export default function PersonalInformationPage() {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#FFFFFF",
                     }}

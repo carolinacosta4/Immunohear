@@ -30,7 +30,7 @@ export default function AboutPage() {
               style={{
                 color: "#3B413C",
                 fontFamily: "Kaleko-Bold",
-                fontSize: 32,
+                fontSize: 28,
               }}
             >
               About
@@ -46,7 +46,7 @@ export default function AboutPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >
@@ -58,7 +58,7 @@ export default function AboutPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >
@@ -71,7 +71,7 @@ export default function AboutPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >
@@ -85,7 +85,7 @@ export default function AboutPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >

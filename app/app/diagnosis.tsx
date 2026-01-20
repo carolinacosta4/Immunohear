@@ -74,7 +74,7 @@ export default function DiagnosisPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  fontSize: 28,
                 }}
               >
                 Diagnosis
@@ -109,25 +109,29 @@ export default function DiagnosisPage() {
                         >
                           <Text
                             style={{
+                              flex: 1,
                               color: "#3B413C",
                               fontFamily: "Kaleko-Bold",
-                              fontSize: 18,
+                              fontSize: 14,
+                              marginRight: 8
                             }}
                           >
                             {disease.IDdisease.name}
                           </Text>
-                          <Icon
+                          <View>
+                            <Icon
                             name={isOpen ? "chevron-up" : "chevron-down"}
                             size={25}
                             color="#3B413C"
                           />
+                          </View>
                         </Pressable>
 
                         <Text
                           style={{
                             color: "#9DB5B2",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 12,
+                            fontSize: 10,
                             marginBottom: 4
                           }}
                         >
@@ -146,7 +150,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Regular",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             Type of hearing loss:
@@ -155,7 +159,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Medium",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             {disease.IDdisease.type}
@@ -166,7 +170,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Regular",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             Vestibular disturb:
@@ -175,7 +179,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Medium",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             {disease.vestibular ? "Present" : "Missing"}
@@ -186,7 +190,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Regular",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             Tinnitus:
@@ -195,7 +199,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Medium",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             {disease.tinnitus ? "Present" : "Missing"}
@@ -206,7 +210,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Regular",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             Affected:
@@ -215,7 +219,7 @@ export default function DiagnosisPage() {
                             style={{
                               color: "#3B413C",
                               fontFamily: "Antebas-Medium",
-                              fontSize: 16,
+                              fontSize: 12,
                             }}
                           >
                             {disease.affected}
@@ -228,7 +232,7 @@ export default function DiagnosisPage() {
                             paddingTop: 12,
                             color: "#3B413C",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 14,
+                            fontSize: 12,
                             borderTopColor: "#9DB5B2",
                             borderTopWidth: 1,
                           }}

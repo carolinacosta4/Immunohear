@@ -56,7 +56,7 @@ export default function HomeScreen() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 32,
+                  fontSize: 26,
                 }}
               >
                 Good morning,
@@ -65,7 +65,7 @@ export default function HomeScreen() {
                 style={{
                   color: "#9DB5B2",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 38,
+                  fontSize: 34,
                 }}
               >
                 {userInfo.user.name}

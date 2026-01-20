@@ -99,7 +99,7 @@ export default function TipPage() {
                   style={{
                     alignSelf: "stretch",
                     color: "#DAF0EE",
-                    fontSize: 24,
+                    fontSize: 20,
                     fontFamily: "Kaleko-Bold",
                     flexWrap: "wrap",
                   }}
@@ -109,7 +109,7 @@ export default function TipPage() {
                 <Text
                   style={{
                     color: "#94D1BE",
-                    fontSize: 12,
+                    fontSize: 10,
                     fontFamily: "Antebas-Regular",
                   }}
                 >
@@ -156,7 +156,7 @@ export default function TipPage() {
                 borderLeftWidth: 1.5,
                 borderLeftColor: "#94D1BE",
                 color: "#3B413C",
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >
@@ -165,7 +165,7 @@ export default function TipPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 14,
                 fontFamily: "Antebas-Regular",
               }}
             >

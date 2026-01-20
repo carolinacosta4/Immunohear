@@ -14,7 +14,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
           style={{
             color: "#3B413C",
             fontFamily: "Antebas-Medium",
-            fontSize: 22,
+            fontSize: 18,
           }}
         >
           Your diagnosis
@@ -40,7 +40,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Kaleko-Bold",
-                      fontSize: 20,
+                      fontSize: 16,
                     }}
                   >
                     {disease.IDdisease.name}
@@ -49,7 +49,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                     style={{
                       color: "#9DB5B2",
                       fontFamily: "Antebas-Regular",
-                      fontSize: 12,
+                      fontSize: 10,
                     }}
                   >
                     Confirmation date:{" "}
@@ -66,7 +66,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Type of hearing loss:
@@ -75,7 +75,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       {disease.IDdisease.type}
@@ -86,7 +86,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Vestibular disturb:
@@ -95,7 +95,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       {disease.vestibular ? "Present" : "Missing"}
@@ -107,7 +107,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Tinnitus:
@@ -116,7 +116,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       {disease.tinnitus ? "Present" : "Missing"}
@@ -128,7 +128,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Affected:
@@ -137,7 +137,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
                       style={{
                         color: "#3B413C",
                         fontFamily: "Antebas-Medium",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       {disease.affected}
@@ -160,7 +160,7 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
               style={{
                 color: "#3B413C",
                 fontFamily: "Antebas-Regular",
-                fontSize: 14,
+                fontSize: 12,
               }}
             >
               You don´t have any disease diagnosed.

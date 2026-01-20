@@ -25,7 +25,7 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
           style={{
             color: "#3B413C",
             fontFamily: "Antebas-Medium",
-            fontSize: 22,
+            fontSize: 18,
           }}
         >
           Don’t forget
@@ -45,7 +45,7 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
             style={{
               color: "#9DB5B2",
               fontFamily: "Antebas-Medium",
-              fontSize: 18,
+              fontSize: 14,
             }}
           >
             {appointments[0].doctor}
@@ -60,7 +60,7 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
               style={{
                 color: "#3B413C",
                 fontFamily: "Antebas-Medium",
-                fontSize: 18,
+                fontSize: 14,
               }}
             >
               {appointmentDate.getTime() === tomorrow.getTime()
@@ -71,7 +71,7 @@ const NextAppointment = ({ appointments }: NextAppointmentProps) => {
               style={{
                 color: "#3B413C",
                 fontFamily: "Antebas-Medium",
-                fontSize: 18,
+                fontSize: 14,
               }}
             >
               {format(new Date(appointments[0].date), "HH:mm")}

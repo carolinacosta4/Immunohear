@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 38,
+                  fontSize: 34,
                   textAlign: "center",
                 }}
               >
@@ -101,7 +101,7 @@ export default function RegisterPage() {
                   style={{
                     color: "#3B413C",
                     fontFamily: "Antebas-Regular",
-                    fontSize: 20,
+                    fontSize: 16,
                     textAlign: "center",
                   }}
                 >
@@ -111,7 +111,7 @@ export default function RegisterPage() {
                   style={{
                     color: "#3B413C",
                     fontFamily: "Antebas-Regular",
-                    fontSize: 20,
+                    fontSize: 16,
                     textAlign: "center",
                   }}
                 >
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                   <TextInput
                     style={{
                       flex: 1,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#635C54",
                       borderColor: "#635C54",
@@ -142,7 +142,7 @@ export default function RegisterPage() {
                   <TextInput
                     style={{
                       flex: 1,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#635C54",
                       borderColor: "#635C54",
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                     <TextInput
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Regular",
                         color: "#635C54",
                         padding: 8,
@@ -221,7 +221,7 @@ export default function RegisterPage() {
                     <TextInput
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Regular",
                         color: "#635C54",
                         padding: 8,
@@ -283,7 +283,7 @@ export default function RegisterPage() {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#FFFFFF",
                     }}
@@ -298,6 +298,8 @@ export default function RegisterPage() {
                     style={{
                       textDecorationLine: "underline",
                       textAlign: "center",
+                      fontFamily: "Antebas-Regular",
+                      color: "#3B413C",
                     }}
                   >
                     Already have an account?
@@ -308,6 +310,8 @@ export default function RegisterPage() {
                   style={{
                     textAlign: "center",
                     marginRight: 4,
+                    fontFamily: "Antebas-Regular",
+                    color: "#3B413C",
                   }}
                 >
                   When you create an account you are accepting Immunohear's{" "}

@@ -99,7 +99,8 @@ export default function HomeScreen() {
 
     const checkDate = selectedDate || todayStr;
     const existingEntry = response.find(
-      (entry: any) => format(new Date(entry.createdAt), "yyyy-MM-dd") === checkDate,
+      (entry: any) =>
+        format(new Date(entry.createdAt), "yyyy-MM-dd") === checkDate,
     );
 
     if (existingEntry) {
@@ -110,7 +111,10 @@ export default function HomeScreen() {
       setShowEntry(false);
       setDayEntry(null);
       // Only show "No entry found" if we are looking at a past day
-      if (checkDate !== todayStr && isBefore(startOfDay(new Date(checkDate)), todayStart)) {
+      if (
+        checkDate !== todayStr &&
+        isBefore(startOfDay(new Date(checkDate)), todayStart)
+      ) {
         setNoEntryFound(true);
       } else {
         setNoEntryFound(false);
@@ -238,7 +242,7 @@ export default function HomeScreen() {
               style={{
                 color: "#3B413C",
                 fontFamily: "Kaleko-Bold",
-                fontSize: 32,
+                fontSize: 28,
               }}
             >
               Diary
@@ -251,15 +255,20 @@ export default function HomeScreen() {
               onDateChanged={(date) => {
                 const newDateObj = new Date(date);
                 const newDateStr = format(newDateObj, "yyyy-MM-dd");
-                
+
                 // If the week changed, update the currentWeekDate
                 const weekStart = startOfWeek(newDateObj, { weekStartsOn: 1 });
-                const currentWeekStart = startOfWeek(currentWeekDate, { weekStartsOn: 1 });
-                
-                if (format(weekStart, "yyyy-MM-dd") !== format(currentWeekStart, "yyyy-MM-dd")) {
+                const currentWeekStart = startOfWeek(currentWeekDate, {
+                  weekStartsOn: 1,
+                });
+
+                if (
+                  format(weekStart, "yyyy-MM-dd") !==
+                  format(currentWeekStart, "yyyy-MM-dd")
+                ) {
                   setCurrentWeekDate(newDateObj);
                 }
-                
+
                 // Update selected date if it's not today's automatic triggers
                 // (CalendarProvider triggers onDateChanged on mount and sometimes on week change)
               }}
@@ -292,15 +301,7 @@ export default function HomeScreen() {
                     setSelectedDate(format(weekStart, "yyyy-MM-dd"));
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      color: "#3B413C",
-                      fontFamily: "Antebas-Medium",
-                    }}
-                  >
-                    <Icon name="chevron-left" size={24} color="#3B413C" />
-                  </Text>
+                  <Icon name="chevron-left" size={24} color="#3B413C" />
                 </TouchableOpacity>
 
                 <View style={{ overflow: "hidden", width: calendarWidth }}>
@@ -318,7 +319,7 @@ export default function HomeScreen() {
                     onDayPress={(day) => {
                       const date = new Date(day.dateString);
                       const dayStart = startOfDay(date);
-                      
+
                       if (dayStart > todayStart) return;
 
                       setSelectedDate(day.dateString);
@@ -327,7 +328,9 @@ export default function HomeScreen() {
                       setDayEntry(null);
 
                       const entry = entries?.find(
-                        (e: any) => format(new Date(e.createdAt), "yyyy-MM-dd") === day.dateString
+                        (e: any) =>
+                          format(new Date(e.createdAt), "yyyy-MM-dd") ===
+                          day.dateString,
                       );
 
                       if (entry) {
@@ -370,15 +373,7 @@ export default function HomeScreen() {
                     setSelectedDate(format(weekStart, "yyyy-MM-dd"));
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      color: "#3B413C",
-                      fontFamily: "Antebas-Medium",
-                    }}
-                  >
-                    <Icon name="chevron-right" size={24} color="#3B413C" />
-                  </Text>
+                  <Icon name="chevron-right" size={24} color="#3B413C" />
                 </TouchableOpacity>
               </View>
             </CalendarProvider>
@@ -398,7 +393,7 @@ export default function HomeScreen() {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Antebas-Medium",
-                      fontSize: 22,
+                      fontSize: 18,
                     }}
                   >
                     You were feeling
@@ -427,7 +422,7 @@ export default function HomeScreen() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 18,
+                          fontSize: 14,
                         }}
                       >
                         {dayEntry.IDFeeling.name}
@@ -436,7 +431,7 @@ export default function HomeScreen() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Antebas-Regular",
-                          fontSize: 13,
+                          fontSize: 11,
                           flexShrink: 1,
                         }}
                       >
@@ -457,7 +452,7 @@ export default function HomeScreen() {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Antebas-Medium",
-                      fontSize: 22,
+                      fontSize: 18,
                     }}
                   >
                     Your thoughts
@@ -467,7 +462,7 @@ export default function HomeScreen() {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Antebas-Regular",
-                      fontSize: 16,
+                      fontSize: 12,
                     }}
                   >
                     {dayEntry.text}
@@ -487,7 +482,7 @@ export default function HomeScreen() {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Antebas-Medium",
-                      fontSize: 22,
+                      fontSize: 18,
                     }}
                   >
                     How are you feeling?
@@ -539,7 +534,7 @@ export default function HomeScreen() {
                     style={{
                       color: "#3B413C",
                       fontFamily: "Antebas-Medium",
-                      fontSize: 22,
+                      fontSize: 18,
                     }}
                   >
                     Write your thoughts
@@ -548,7 +543,7 @@ export default function HomeScreen() {
                   <TextInput
                     style={{
                       flex: 1,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontFamily: "Antebas-Regular",
                       color: "#3B413C",
                       borderColor: "#3B413C",
@@ -572,7 +567,7 @@ export default function HomeScreen() {
                     paddingHorizontal: 34,
                   }}
                 >
-                  {newThoughts === "" ||
+                  {newThoughts === "" || feelingID === "" || 
                   feelingID === null ||
                   feelingID === undefined ? (
                     <TouchableOpacity
@@ -589,7 +584,7 @@ export default function HomeScreen() {
                         style={{
                           color: "#fff",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 18,
+                          fontSize: 14,
                         }}
                       >
                         Save
@@ -609,7 +604,7 @@ export default function HomeScreen() {
                         style={{
                           color: "#fff",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 18,
+                          fontSize: 14,
                         }}
                       >
                         Save
@@ -652,7 +647,7 @@ export default function HomeScreen() {
                   color: "#3B413C",
                   fontFamily: "Antebas-Medium",
                   textAlign: "center",
-                  fontSize: 22,
+                  fontSize: 18,
                 }}
               >
                 No entry found

@@ -16,7 +16,7 @@ const QuickActions = () => {
           style={{
             color: "#3B413C",
             fontFamily: "Antebas-Medium",
-            fontSize: 22,
+            fontSize: 18,
           }}
         >
           What are you looking for?
@@ -48,7 +48,7 @@ const QuickActions = () => {
                 style={{
                   color: "#FFFFFF",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 16,
+                  fontSize: 12,
                   textAlign: "center",
                 }}
               >
@@ -77,7 +77,7 @@ const QuickActions = () => {
                 style={{
                   color: "#FFFFFF",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 16,
+                  fontSize: 12,
                   textAlign: "center",
                 }}
               >
@@ -105,7 +105,7 @@ const QuickActions = () => {
                 style={{
                   color: "#FFFFFF",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 16,
+                  fontSize: 12,
                   textAlign: "center",
                 }}
               >

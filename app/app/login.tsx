@@ -85,7 +85,7 @@ export default function LoginPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 38,
+                  fontSize: 34,
                   textAlign: "center",
                 }}
               >
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 20,
+                  fontSize: 16,
                   textAlign: "center",
                 }}
               >
@@ -109,7 +109,7 @@ export default function LoginPage() {
                   <TextInput
                     style={{
                       flex: 1,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#635C54",
                       borderColor: "#635C54",
@@ -138,7 +138,7 @@ export default function LoginPage() {
                     <TextInput
                       style={{
                         flex: 1,
-                        fontSize: 20,
+                        fontSize: 16,
                         fontFamily: "Antebas-Regular",
                         color: "#635C54",
                         padding: 8,
@@ -198,7 +198,7 @@ export default function LoginPage() {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#FFFFFF",
                     }}
@@ -212,6 +212,8 @@ export default function LoginPage() {
                   style={{
                     textDecorationLine: "underline",
                     textAlign: "center",
+                    fontFamily: "Antebas-Regular",
+                    color: "#3B413C",
                   }}
                 >
                   Forgot your password?
@@ -221,6 +223,8 @@ export default function LoginPage() {
                     style={{
                       textDecorationLine: "underline",
                       textAlign: "center",
+                      fontFamily: "Antebas-Regular",
+                    color: "#3B413C",
                     }}
                   >
                     Don't have an account yet?

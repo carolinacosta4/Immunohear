@@ -142,7 +142,8 @@ export default function DocumentsPage() {
               style={{
                 color: "#3B413C",
                 fontFamily: "Kaleko-Bold",
-                fontSize: 32,
+                fontSize: 28,
+                marginRight: 4
               }}
             >
               Medical Documents
@@ -153,8 +154,8 @@ export default function DocumentsPage() {
             <View style={{ flex: 1, flexDirection: "row", gap: 10 }}>
               <TextInput
                 style={{
-                  width: "70%",
-                  fontSize: 14,
+                  width: "65%",
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                   color: "#635C54",
                   borderColor: "#635C54",
@@ -168,7 +169,7 @@ export default function DocumentsPage() {
                 onChangeText={setSearch}
               />
 
-              <View style={{ width: "26%" }}>
+              <View style={{ width: "32%" }}>
                 <TouchableOpacity
                   style={{
                     borderColor: "#635C54",
@@ -183,7 +184,7 @@ export default function DocumentsPage() {
                 >
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 12,
                       fontFamily: "Antebas-Regular",
                       color: "#635C54",
                     }}
@@ -228,7 +229,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Kaleko-Bold",
-                          fontSize: 18,
+                          fontSize: 16,
                         }}
                       >
                         {document.IDexam.name}
@@ -238,7 +239,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#9DB5B2",
                           fontFamily: "Antebas-Regular",
-                          fontSize: 12,
+                          fontSize: 10,
                         }}
                       >
                         Confirmation date:{" "}
@@ -261,7 +262,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 16,
+                          fontSize: 14,
                         }}
                       >
                         Download
@@ -286,7 +287,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Kaleko-Bold",
-                          fontSize: 18,
+                          fontSize: 16,
                         }}
                       >
                         {document.IDexam.name}
@@ -296,7 +297,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#9DB5B2",
                           fontFamily: "Antebas-Regular",
-                          fontSize: 12,
+                          fontSize: 10,
                         }}
                       >
                         Confirmation date: {document.createdAt}
@@ -318,7 +319,7 @@ export default function DocumentsPage() {
                         style={{
                           color: "#3B413C",
                           fontFamily: "Antebas-Medium",
-                          fontSize: 16,
+                          fontSize: 14,
                         }}
                       >
                         Download
@@ -340,7 +341,7 @@ export default function DocumentsPage() {
                     color: "#3B413C",
                     fontFamily: "Antebas-Medium",
                     textAlign: "center",
-                    fontSize: 22,
+                    fontSize: 16,
                   }}
                 >
                   No exams found

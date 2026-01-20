@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Feather";
 import { Link, useRouter } from "expo-router";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect } from "react";
+import LoadingScreen from "@/components/Loading";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function HomeScreen() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  fontSize: 28,
                 }}
               >
                 Account
@@ -56,7 +57,7 @@ export default function HomeScreen() {
                   <Text
                     style={{
                       fontFamily: "Kaleko-Bold",
-                      fontSize: 28,
+                      fontSize: 24,
                       textAlign: "center",
                       color: "#3B413C",
                     }}
@@ -66,7 +67,7 @@ export default function HomeScreen() {
                   <Text
                     style={{
                       fontFamily: "Antebas-Regular",
-                      fontSize: 16,
+                      fontSize: 12,
                       textAlign: "center",
                       color: "#9DB5B2",
                     }}
@@ -87,7 +88,7 @@ export default function HomeScreen() {
                       <Text
                         style={{
                           fontFamily: "Antebas-Regular",
-                          fontSize: 16,
+                          fontSize: 12,
                           textAlign: "center",
                           color: "#FFFFFF",
                           backgroundColor: "#94D1BE",
@@ -106,14 +107,14 @@ export default function HomeScreen() {
             <View
               style={{
                 gap: 8,
-                marginBottom: 35,
+                marginBottom: 80,
               }}
             >
               <Text
                 style={{
                   color: "#3B413C",
                   fontFamily: "Antebas-Medium",
-                  fontSize: 22,
+                  fontSize: 18,
                 }}
               >
                 Options
@@ -171,7 +172,7 @@ export default function HomeScreen() {
                           style={{
                             color: "#3B413C",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 18,
+                            fontSize: 14,
                           }}
                         >
                           Personal Information
@@ -201,7 +202,7 @@ export default function HomeScreen() {
                           style={{
                             color: "#3B413C",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 18,
+                            fontSize: 14,
                           }}
                         >
                           Medical Documents
@@ -232,7 +233,7 @@ export default function HomeScreen() {
                           style={{
                             color: "#3B413C",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 18,
+                            fontSize: 14,
                           }}
                         >
                           Diagnosis
@@ -264,7 +265,7 @@ export default function HomeScreen() {
                           style={{
                             color: "#3B413C",
                             fontFamily: "Antebas-Regular",
-                            fontSize: 18,
+                            fontSize: 14,
                           }}
                         >
                           About
@@ -275,6 +276,7 @@ export default function HomeScreen() {
                   </TouchableOpacity>
                 </Link>
               </View>
+
               {/* <View
               style={{
                 backgroundColor: "#FFFFFF",
@@ -316,7 +318,7 @@ export default function HomeScreen() {
                   style={{
                     color: "#3B413C",
                     fontFamily: "Antebas-Regular",
-                    fontSize: 18,
+                    fontSize: 14,
                   }}
                 >
                   Logout

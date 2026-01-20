@@ -32,7 +32,7 @@ export default function WelcomePage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 50,
+                  fontSize: 48,
                   textAlign: "center",
                 }}
               >
@@ -42,7 +42,7 @@ export default function WelcomePage() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Antebas-Regular",
-                  fontSize: 20,
+                  fontSize: 16,
                   textAlign: "center",
                 }}
               >
@@ -70,7 +70,7 @@ export default function WelcomePage() {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#3B413C",
                     }}
@@ -94,7 +94,7 @@ export default function WelcomePage() {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
+                      fontSize: 16,
                       fontFamily: "Antebas-Regular",
                       color: "#FFFFFF",
                     }}

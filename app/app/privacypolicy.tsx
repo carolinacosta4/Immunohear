@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
               style={{
                 color: "#3B413C",
                 fontFamily: "Kaleko-Bold",
-                fontSize: 32,
+                fontSize: 28,
               }}
             >
               Privacy Policy
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
             <Text
               style={{
                 color: "#3B413C",
-                fontSize: 16,
+                fontSize: 12,
                 fontFamily: "Antebas-Regular",
               }}
             >
@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -114,7 +114,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -132,7 +132,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -141,7 +141,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -157,7 +157,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -166,7 +166,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -181,7 +181,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -190,7 +190,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -204,7 +204,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -213,7 +213,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -227,7 +227,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -236,7 +236,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -251,7 +251,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -260,7 +260,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -273,7 +273,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -282,7 +282,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -295,7 +295,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -304,7 +304,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -314,7 +314,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >
@@ -323,7 +323,7 @@ export default function PrivacyPolicyPage() {
               <Text
                 style={{
                   color: "#3B413C",
-                  fontSize: 16,
+                  fontSize: 12,
                   fontFamily: "Antebas-Regular",
                 }}
               >

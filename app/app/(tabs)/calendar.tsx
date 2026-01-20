@@ -115,7 +115,7 @@ export default function CalendarScreen() {
                 style={{
                   color: "#3B413C",
                   fontFamily: "Kaleko-Bold",
-                  fontSize: 32,
+                  fontSize: 28,
                 }}
               >
                 Calendar
@@ -145,6 +145,7 @@ export default function CalendarScreen() {
                     }}
                     onMonthChange={(month) => {
                       setVisibleMonth(new Date(month.year, month.month - 1, 1));
+                      setShowEntry(false)
                     }}
                     style={{
                       backgroundColor: "#FFFFFF",
@@ -195,7 +196,7 @@ export default function CalendarScreen() {
                           <Text
                             style={{
                               fontFamily: "Antebas-Medium",
-                              fontSize: 18,
+                              fontSize: 14,
                               color: "#3B413C",
                             }}
                           >
@@ -204,7 +205,7 @@ export default function CalendarScreen() {
                           <Text
                             style={{
                               fontFamily: "Antebas-Regular",
-                              fontSize: 15,
+                              fontSize: 11,
                               color: "#94D1BE",
                             }}
                           >
@@ -215,7 +216,7 @@ export default function CalendarScreen() {
                           <Text
                             style={{
                               fontFamily: "Antebas-Medium",
-                              fontSize: 22,
+                              fontSize: 18,
                               color: "#3B413C",
                             }}
                           >
@@ -241,7 +242,7 @@ export default function CalendarScreen() {
                     <Text
                       style={{
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Total appointments
@@ -249,7 +250,7 @@ export default function CalendarScreen() {
                     <Text
                       style={{
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 14,
                       }}
                     >
                       {monthlyEntries.length}
@@ -266,7 +267,7 @@ export default function CalendarScreen() {
                     <Text
                       style={{
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 12,
                       }}
                     >
                       Future appointments
@@ -274,7 +275,7 @@ export default function CalendarScreen() {
                     <Text
                       style={{
                         fontFamily: "Antebas-Regular",
-                        fontSize: 16,
+                        fontSize: 14,
                       }}
                     >
                       {futureEntries.length}
