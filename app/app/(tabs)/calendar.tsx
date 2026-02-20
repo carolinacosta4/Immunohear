@@ -15,7 +15,7 @@ interface Entry {
 
 export default function CalendarScreen() {
   const [currentDate, setCurrentDate] = useState(
-    format(new Date(), "yyyy-MM-dd")
+    format(new Date(), "yyyy-MM-dd"),
   );
   const [visibleMonth, setVisibleMonth] = useState(new Date());
   const [showEntry, setShowEntry] = useState(false);
@@ -43,7 +43,7 @@ export default function CalendarScreen() {
       if (!user) return;
       const response = await fetchUserAppointments(user.userID);
       const daysWithEntries = response.map((entry) =>
-        format(entry.date, "yyyy-MM-dd")
+        format(entry.date, "yyyy-MM-dd"),
       );
       setDaysWithEntries(daysWithEntries);
       setEntries(response);
@@ -57,7 +57,7 @@ export default function CalendarScreen() {
     if (loading || !entries) return {};
 
     return entries.filter(
-      (entry) => getMonth(new Date(entry.date)) === visibleMonth.getMonth()
+      (entry) => getMonth(new Date(entry.date)) === visibleMonth.getMonth(),
     );
   }, [loading, entries, visibleMonth]);
 
@@ -86,7 +86,7 @@ export default function CalendarScreen() {
         dots: [
           {
             key: "entry",
-            color: isSelected ? "#FFFFFF" : "#DAF0EE",
+            color: isSelected ? "#FFFFFF" : "#3B413C",
             selectedDotColor: "#FFFFFF",
           },
         ],
@@ -105,188 +105,194 @@ export default function CalendarScreen() {
     return marked;
   }, [currentDate, visibleMonth, entries, daysWithEntries, loading]);
 
-  return (
-    !loading ? (
-      <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
-        <SafeAreaView>
-          <ScrollView>
-            <View style={{ marginBottom: 24, paddingHorizontal: 34 }}>
-              <Text
-                style={{
-                  color: "#3B413C",
-                  fontFamily: "Kaleko-Bold",
-                  fontSize: 28,
-                }}
-              >
-                Calendar
-              </Text>
-            </View>
+  return !loading ? (
+    <SafeAreaProvider style={{ backgroundColor: "#F3F9F8" }}>
+      <SafeAreaView>
+        <ScrollView style={{ paddingHorizontal: 34 }}>
+          <View style={{ marginBottom: 24 }}>
+            <Text
+              style={{
+                color: "#3B413C",
+                fontFamily: "Kaleko-Bold",
+                fontSize: 28,
+              }}
+            >
+              Calendar
+            </Text>
+          </View>
 
-            <View style={{ gap: 28 }}>
-              <View style={{ gap: 12 }}>
-                <View style={{ paddingHorizontal: 34 }}>
-                  <Calendar
-                    current={currentDate}
-                    markedDates={markedDates}
-                    onDayPress={(day) => {
-                      setCurrentDate(day.dateString);
-                      const dayEntries = entries.filter(
-                        (entry) =>
-                          format(entry.date, "yyyy-MM-dd") === day.dateString
-                      );
-                      if (dayEntries.length !== 0) {
-                        setShowEntry(true);
-                        setDayEntries(dayEntries);
-                        return;
-                      }
+          <View style={{ gap: 28, marginBottom: 200, }}>
+            <View style={{ gap: 12 }}>
+              <View>
+                <Calendar
+                  current={currentDate}
+                  markedDates={markedDates}
+                  onDayPress={(day) => {
+                    setCurrentDate(day.dateString);
+                    const dayEntries = entries.filter(
+                      (entry) =>
+                        format(entry.date, "yyyy-MM-dd") === day.dateString,
+                    );
+                    if (dayEntries.length !== 0) {
+                      setShowEntry(true);
+                      setDayEntries(dayEntries);
+                      return;
+                    }
 
-                      setShowEntry(false);
-                      setDayEntries([]);
-                    }}
-                    onMonthChange={(month) => {
-                      setVisibleMonth(new Date(month.year, month.month - 1, 1));
-                      setShowEntry(false)
-                    }}
-                    style={{
-                      backgroundColor: "#FFFFFF",
-                      elevation: 0,
-                      shadowOpacity: 0,
-                      shadowRadius: 0,
-                      shadowOffset: { width: 0, height: 0 },
-                      borderRadius: 12,
-                    }}
-                    theme={{
-                      selectedDayBackgroundColor: "#94D1BE",
-                      selectedDayTextColor: "#FFFFFF",
-                      todayTextColor: "#94D1BE",
-                      dayTextColor: "#3B413C",
-                      textDisabledColor: "#9DB5B2",
-                      textSectionTitleColor: "#3B413C",
-                      monthTextColor: "#3B413C",
-                      textDayHeaderFontSize: 12,
-                      textMonthFontSize: 14,
-                      textDayFontSize: 14,
-                      textDayHeaderFontFamily: "Antebas-Regular",
-                      textMonthFontFamily: "Antebas-Regular",
-                      textDayFontFamily: "Antebas-Regular",
-                      calendarBackground: "#FFFFFF",
-                      arrowColor: "#3B413C",
-                    }}
-                    markingType="multi-dot"
-                    firstDay={1}
-                    enableSwipeMonths={true}
-                    disabledDaysIndexes={[]}
-                    hideExtraDays={false}
-                  />
-                </View>
-                {showEntry &&
-                  dayEntries.map((entry, index) => (
-                    <View key={index} style={{ paddingHorizontal: 34 }}>
-                      <View
-                        style={{
-                          backgroundColor: "#DAF0EE",
-                          borderRadius: 12,
-                          padding: 18,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <View style={{ gap: 4 }}>
-                          <Text
-                            style={{
-                              fontFamily: "Antebas-Medium",
-                              fontSize: 14,
-                              color: "#3B413C",
-                            }}
-                          >
-                            {entry.name}
-                          </Text>
-                          <Text
-                            style={{
-                              fontFamily: "Antebas-Regular",
-                              fontSize: 11,
-                              color: "#94D1BE",
-                            }}
-                          >
-                            {entry.doctor}
-                          </Text>
-                        </View>
-                        <View>
-                          <Text
-                            style={{
-                              fontFamily: "Antebas-Medium",
-                              fontSize: 18,
-                              color: "#3B413C",
-                            }}
-                          >
-                            {format(new Date(entry.date), "HH:mm")}
-                          </Text>
-                        </View>
+                    setShowEntry(false);
+                    setDayEntries([]);
+                  }}
+                  onMonthChange={(month) => {
+                    setVisibleMonth(new Date(month.year, month.month - 1, 1));
+                    setShowEntry(false);
+                  }}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    elevation: 0,
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
+                    shadowOffset: { width: 0, height: 0 },
+                    borderRadius: 12,
+                  }}
+                  theme={{
+                    selectedDayBackgroundColor: "#94D1BE",
+                    selectedDayTextColor: "#FFFFFF",
+                    todayTextColor: "#94D1BE",
+                    dayTextColor: "#3B413C",
+                    textDisabledColor: "#9DB5B2",
+                    textSectionTitleColor: "#3B413C",
+                    monthTextColor: "#3B413C",
+                    textDayHeaderFontSize: 12,
+                    textMonthFontSize: 14,
+                    textDayFontSize: 14,
+                    textDayHeaderFontFamily: "Antebas-Regular",
+                    textMonthFontFamily: "Antebas-Regular",
+                    textDayFontFamily: "Antebas-Regular",
+                    calendarBackground: "#FFFFFF",
+                    arrowColor: "#3B413C",
+                    dotStyle: {
+                      width: 6,
+                      height: 6,
+                      borderRadius: 4,
+                      marginBottom: 4
+                    },
+                  }}
+                  markingType="multi-dot"
+                  firstDay={1}
+                  enableSwipeMonths={true}
+                  disabledDaysIndexes={[]}
+                  hideExtraDays={false}
+                />
+              </View>
+              {showEntry &&
+                dayEntries.map((entry, index) => (
+                  <View key={index}>
+                    <View
+                      style={{
+                        backgroundColor: "#DAF0EE",
+                        borderRadius: 12,
+                        padding: 18,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <View style={{ gap: 4 }}>
+                        <Text
+                          style={{
+                            fontFamily: "Antebas-Medium",
+                            fontSize: 14,
+                            color: "#3B413C",
+                          }}
+                        >
+                          {entry.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: "Antebas-Regular",
+                            fontSize: 11,
+                            color: "#94D1BE",
+                          }}
+                        >
+                          {entry.doctor}
+                        </Text>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontFamily: "Antebas-Medium",
+                            fontSize: 18,
+                            color: "#3B413C",
+                          }}
+                        >
+                          {format(new Date(entry.date), "HH:mm")}
+                        </Text>
                       </View>
                     </View>
-                  ))}
-              </View>
-              <View style={{ paddingHorizontal: 34 }}>
-                <View style={{ backgroundColor: "#FFFFFF", borderRadius: 12 }}>
-                  <View
+                  </View>
+                ))}
+            </View>
+            <View>
+              <View style={{ backgroundColor: "#FFFFFF", borderRadius: 12 }}>
+                <View
+                  style={{
+                    padding: 18,
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#3B413C",
+                  }}
+                >
+                  <Text
                     style={{
-                      padding: 18,
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#3B413C",
+                      fontFamily: "Antebas-Regular",
+                      fontSize: 12,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Total appointments
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 14,
-                      }}
-                    >
-                      {monthlyEntries.length}
-                    </Text>
-                  </View>
-                  <View
+                    Total appointments
+                  </Text>
+                  <Text
                     style={{
-                      padding: 18,
-                      flex: 1,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
+                      fontFamily: "Antebas-Regular",
+                      fontSize: 14,
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Future appointments
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 14,
-                      }}
-                    >
-                      {futureEntries.length}
-                    </Text>
-                  </View>
+                    {monthlyEntries.length}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    padding: 18,
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Antebas-Regular",
+                      fontSize: 12,
+                    }}
+                  >
+                    Future appointments
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: "Antebas-Regular",
+                      fontSize: 14,
+                    }}
+                  >
+                    {futureEntries.length}
+                  </Text>
                 </View>
               </View>
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    ) : <LoadingScreen />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  ) : (
+    <LoadingScreen />
   );
 }

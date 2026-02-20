@@ -381,7 +381,7 @@ export default function HomeScreen() {
 
           {!noEntryFound ? (
             showEntry ? (
-              <>
+              <View style={{marginBottom: 300}}>
                 <View
                   style={{
                     gap: 8,
@@ -468,9 +468,9 @@ export default function HomeScreen() {
                     {dayEntry.text}
                   </Text>
                 </View>
-              </>
+              </View>
             ) : (
-              <>
+              <View style={{marginBottom: 100}}>
                 <View
                   style={{
                     gap: 8,
@@ -567,7 +567,8 @@ export default function HomeScreen() {
                     paddingHorizontal: 34,
                   }}
                 >
-                  {newThoughts === "" || feelingID === "" || 
+                  {newThoughts === "" ||
+                  feelingID === "" ||
                   feelingID === null ||
                   feelingID === undefined ? (
                     <TouchableOpacity
@@ -632,7 +633,7 @@ export default function HomeScreen() {
                     </Text>
                   </View>
                 )}
-              </>
+              </View>
             )
           ) : (
             <View
@@ -640,6 +641,7 @@ export default function HomeScreen() {
                 gap: 8,
                 marginTop: 15,
                 paddingHorizontal: 34,
+                marginBottom: 35,
               }}
             >
               <Text

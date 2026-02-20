@@ -143,7 +143,7 @@ export default function DocumentsPage() {
                 color: "#3B413C",
                 fontFamily: "Kaleko-Bold",
                 fontSize: 28,
-                marginRight: 4
+                marginRight: 4,
               }}
             >
               Medical Documents
@@ -300,7 +300,8 @@ export default function DocumentsPage() {
                           fontSize: 10,
                         }}
                       >
-                        Confirmation date: {document.createdAt}
+                        Confirmation date:{" "}
+                        {format(document.createdAt, "dd MMM yyyy")}
                       </Text>
                     </View>
 
