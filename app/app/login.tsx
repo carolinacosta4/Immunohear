@@ -14,11 +14,6 @@ import { useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 
 export default function LoginPage() {
-  const fonts = useFonts({
-    "Antebas-Medium": require("@/assets/fonts/antebas-medium.otf"),
-    "Antebas-Regular": require("@/assets/fonts/antebas-regular.otf"),
-    "Kaleko-Bold": require("@/assets/fonts/kaleko-bold.otf"),
-  });
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +25,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const response = await loginUser(email, password);
+      const response = await loginUser(email.toLowerCase(), password);
       if (response.success) {
         setShowError(false);
         setShowConfirmation(true);

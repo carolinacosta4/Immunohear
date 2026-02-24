@@ -31,7 +31,7 @@ export default function DocumentsPage() {
       IDexam: { _id: ""; name: "" };
       IDuser: "";
       _id: "";
-      createdAt: null;
+      createdAt: string | number | Date | null;
       file: "";
       updatedAt: "";
     }[]
@@ -41,11 +41,33 @@ export default function DocumentsPage() {
       IDexam: { _id: ""; name: "" };
       IDuser: "";
       _id: "";
-      createdAt: null;
+      createdAt: string | number | Date | null;
       file: "";
       updatedAt: "";
     }[]
   >([]);
+
+  const [customDatesStyles, setCustomDatesStyles] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (documents.length > 0) {
+      const uniqueDates = new Set(
+        documents
+          .filter((doc) => doc.createdAt)
+          .map((doc) => format(new Date(doc.createdAt as any), "yyyy-MM-dd")),
+      );
+
+      const styles = Array.from(uniqueDates).map((dateStr) => ({
+        date: new Date(dateStr + "T12:00:00"),
+        style: { backgroundColor: "#DAF0EE" },
+        textStyle: { color: "#3B413C" },
+      }));
+
+      setCustomDatesStyles(styles);
+    } else {
+      setCustomDatesStyles([]);
+    }
+  }, [documents]);
 
   useEffect(() => {
     if (!documents || loading) return;
@@ -56,8 +78,8 @@ export default function DocumentsPage() {
         .startsWith(search.toLowerCase());
       const dateMatch = (() => {
         if (!document.createdAt || !selectedDate) return false;
-        const createdDate = new Date(document.createdAt);
-        const selDate = new Date(selectedDate);
+        const createdDate = new Date(document.createdAt as any);
+        const selDate = new Date(selectedDate as any);
         createdDate.setHours(0, 0, 0, 0);
         selDate.setHours(0, 0, 0, 0);
         return createdDate.getTime() === selDate.getTime();
@@ -70,8 +92,10 @@ export default function DocumentsPage() {
   const fetchUserInfo = async () => {
     try {
       const response = await getUser();
-      const responseUser = await fetchUser(response.user?.userID);
-      setDocuments(responseUser.exams);
+      if (response && response.user) {
+        const responseUser = await fetchUser(response.user.userID);
+        setDocuments(responseUser.exams);
+      }
       setLoading(false);
     } catch (error) {}
   };
@@ -199,7 +223,9 @@ export default function DocumentsPage() {
             {calendarOpened && (
               <View
                 style={{
+                  flex: 1,
                   paddingHorizontal: 34,
+                  alignItems: 'center'
                 }}
               >
                 <CalendarPicker
@@ -208,7 +234,35 @@ export default function DocumentsPage() {
                   dayLabelsWrapper={{ paddingHorizontal: 34 }}
                   previousTitle="‹"
                   nextTitle="›"
+                  customDatesStyles={customDatesStyles}
+                  selectedDayColor="#94D1BE"
+                  selectedDayTextColor="#FFFFFF"
                 />
+                <View style={{width: '50%'}}>
+                  <TouchableOpacity
+                  style={{
+                    backgroundColor: "#3B413C",
+                    borderRadius: 50,
+                    height: 35,
+                    justifyContent: 'center',
+                    marginTop: 12
+                  }}
+                  onPress={() => {
+                    setSelectedDate(null)
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#FFFFFF",
+                      fontSize: 12,
+                      fontFamily: "Antebas-Regular",
+                      textAlign: 'center'
+                    }}
+                  >
+                    Clear selection
+                  </Text>
+                </TouchableOpacity>
+                </View>
               </View>
             )}
             {search === "" &&
@@ -243,7 +297,9 @@ export default function DocumentsPage() {
                         }}
                       >
                         Confirmation date:{" "}
-                        {format(new Date(document.createdAt), "dd MMM yyyy")}
+                        {document.createdAt
+                          ? format(new Date(document.createdAt), "dd MMM yyyy")
+                          : "Date not available"}
                       </Text>
                     </View>
 
@@ -301,7 +357,9 @@ export default function DocumentsPage() {
                         }}
                       >
                         Confirmation date:{" "}
-                        {format(document.createdAt, "dd MMM yyyy")}
+                        {document.createdAt
+                          ? format(new Date(document.createdAt), "dd MMM yyyy")
+                          : "Date not available"}
                       </Text>
                     </View>
 

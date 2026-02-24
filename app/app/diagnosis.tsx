@@ -94,7 +94,7 @@ export default function DiagnosisPage() {
                     <View
                       style={{
                         backgroundColor: "#DAF0EE",
-                        padding: 20,
+                        padding: 16,
                         borderRadius: 12,
                       }}
                     >
@@ -112,7 +112,7 @@ export default function DiagnosisPage() {
                               flex: 1,
                               color: "#3B413C",
                               fontFamily: "Kaleko-Bold",
-                              fontSize: 14,
+                              fontSize: 16,
                               marginRight: 8
                             }}
                           >

@@ -1,5 +1,6 @@
 import { Diagnosis } from "@/interfaces/Diagnosis";
 import { format } from "date-fns";
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 type YourDiagnosisProp = {
@@ -22,129 +23,135 @@ const YourDiagnosis = ({ diagnosis }: YourDiagnosisProp) => {
         {diagnosis.length !== 0 ? (
           <View style={{ gap: 10 }}>
             {diagnosis.map((disease) => (
-              <View
+              <Link
+                href="/diagnosis"
                 style={{
                   backgroundColor: "#DAF0EE",
                   padding: 16,
                   borderRadius: 12,
-                  gap: 8,
                 }}
                 key={disease._id}
               >
                 <View
                   style={{
-                    gap: 2,
+                    gap: 8,
                   }}
                 >
-                  <Text
+                  <View
                     style={{
-                      color: "#3B413C",
-                      fontFamily: "Kaleko-Bold",
-                      fontSize: 16,
+                      gap: 2,
                     }}
                   >
-                    {disease.IDdisease.name}
-                  </Text>
-                  <Text
+                    <Text
+                      style={{
+                        color: "#3B413C",
+                        fontFamily: "Kaleko-Bold",
+                        fontSize: 16,
+                      }}
+                    >
+                      {disease.IDdisease.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#9DB5B2",
+                        fontFamily: "Antebas-Regular",
+                        fontSize: 10,
+                      }}
+                    >
+                      Confirmation date:{" "}
+                      {format(new Date(disease.createdAt), "MMM yyyy")}
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      color: "#9DB5B2",
-                      fontFamily: "Antebas-Regular",
-                      fontSize: 10,
+                      gap: 4,
                     }}
                   >
-                    Confirmation date:{" "}
-                    {format(new Date(disease.createdAt), "MMM yyyy")}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    gap: 4,
-                  }}
-                >
-                  <View style={{ flexDirection: "row", gap: 2 }}>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Type of hearing loss:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 12,
-                      }}
-                    >
-                      {disease.IDdisease.type}
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection: "row", gap: 2 }}>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Vestibular disturb:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 12,
-                      }}
-                    >
-                      {disease.vestibular ? "Present" : "Missing"}
-                    </Text>
-                  </View>
+                    <View style={{ flexDirection: "row", gap: 2 }}>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Regular",
+                          fontSize: 12,
+                        }}
+                      >
+                        Type of hearing loss:
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 12,
+                        }}
+                      >
+                        {disease.IDdisease.type}
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row", gap: 2 }}>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Regular",
+                          fontSize: 12,
+                        }}
+                      >
+                        Vestibular disturb:
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 12,
+                        }}
+                      >
+                        {disease.vestibular ? "Present" : "Missing"}
+                      </Text>
+                    </View>
 
-                  <View style={{ flexDirection: "row", gap: 2 }}>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Tinnitus:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 12,
-                      }}
-                    >
-                      {disease.tinnitus ? "Present" : "Missing"}
-                    </Text>
-                  </View>
+                    <View style={{ flexDirection: "row", gap: 2 }}>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Regular",
+                          fontSize: 12,
+                        }}
+                      >
+                        Tinnitus:
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 12,
+                        }}
+                      >
+                        {disease.tinnitus ? "Present" : "Missing"}
+                      </Text>
+                    </View>
 
-                  <View style={{ flexDirection: "row", gap: 2 }}>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Regular",
-                        fontSize: 12,
-                      }}
-                    >
-                      Affected:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#3B413C",
-                        fontFamily: "Antebas-Medium",
-                        fontSize: 12,
-                      }}
-                    >
-                      {disease.affected}
-                    </Text>
+                    <View style={{ flexDirection: "row", gap: 2 }}>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Regular",
+                          fontSize: 12,
+                        }}
+                      >
+                        Affected:
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#3B413C",
+                          fontFamily: "Antebas-Medium",
+                          fontSize: 12,
+                        }}
+                      >
+                        {disease.affected}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              </Link>
             ))}
           </View>
         ) : (
